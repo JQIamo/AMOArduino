@@ -70,3 +70,8 @@ void LockFreq::updateFreq(){
     }
 }
 
+// updateBaseline(baseFreq) -- updates the "base" frequency (ie, frequency from which the feedback pin voltage
+//      calculates its offset from...)
+void LockFreq::updateBaseFreq(unsigned long baseFreq){
+    _baseFreq = basefreq;
+}
