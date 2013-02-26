@@ -28,9 +28,15 @@
 class SimpleLCD
 {
     public: 
-        SimpleLCD(HardwareSerial)
+        SimpleLCD(HardwareSerial * lcd);
 
-        void write(char);
+        void write(char*);
+        void write(int);
+        void write(int, int);
+        void write(int, char*);
+
+
+
         void clearScreen();
         void selectLine(int);
         void scrollRight();
@@ -42,10 +48,11 @@ class SimpleLCD
         void boxCursorOn();
         void boxCursorOff();
         void backlight(int);
+        
 
     private:
-        HardwareSerial* _lcd
+        HardwareSerial* _lcd;
 
-}
+};
 
 #endif
