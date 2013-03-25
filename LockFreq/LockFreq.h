@@ -28,17 +28,19 @@
 class LockFreq {
 
     public:
-        LockFreq(unsigned long, int);
+        LockFreq(int, int, int);
 
 
         void updateFreq();
-        void initialize(AD9954&);
+        void initialize(AD9954&, unsigned long);
         void updateBaseFreq(unsigned long);
 
 
     private:
         unsigned long _baseFreq, _baseFTW, _offset;
-        int _feedbackPin;
+        int _offsetVoltage;
+        int _feedbackPin, _res;
+        int _adMultiplier;
         AD9954* _dds;
 
 };

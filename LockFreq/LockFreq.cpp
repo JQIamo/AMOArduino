@@ -26,21 +26,30 @@
 /* CONSTRUCTOR */
 
 // LockFreq -- constructor function. 
-//      baseFreq: "baseline" frequency, in hertz
 //      feedbackPin: analog pin # (ie, A0, A1, A2, etc.) where the arduino should
 //          look for a voltage input.
-LockFreq::LockFreq( unsigned long baseFreq, int feedbackPin){
-    _baseFreq = baseFreq;
+//      res: integer, "resolution" of ADC, ie, what change in ADC value constitues a "new" frequency?
+//      multiplier: integer, representing bitshift in going from ADC value to frequency
+LockFreq::LockFreq(  int feedbackPin, int res, int multiplier ){
     _feedbackPin = feedbackPin;
+    _res = res;
+    _adMultiplier = multiplier;
 
 };
 
 // initialize(dds) -- initialize function. 
 //      dds: an AD9954 DDS object, which will be synthesizing frequencies.
-void LockFreq::initialize(AD9954& dds){
+// mulitplier is an integer, which sets the bitshift from pot value << multiplier to get frequency offset (in Hz).
+// eg, pot value 100, multiplier 8 = 2^8 = 256 means frequency offset
+// 25.6 kHz
+// use this in combination with the AD "res" parameter to figure out your
+// channel spacing (ie, digital pot values are spaced by pot "res")
+//      baseFreq: "baseline" frequency, in hertz
+void LockFreq::initialize(AD9954& dds, unsigned long baseFreq){
 
     // Assigns the _dds pointer to our DDS
     _dds = &dds;
+    _baseFreq = baseFreq;
 
     // Configures arduino for maximum analog resolution, and sets up analog input pin
     analogReadResolution(12);
@@ -53,7 +62,8 @@ void LockFreq::initialize(AD9954& dds){
     // jitter in the ADC, the "update frequency" function checks if the new analog 
     // voltage value is more than 2 (out of 4096) different from previous voltage.
     // Thus, our real resolution is 2*256 = 512 Hz.
-    _offset = analogRead(_feedbackPin) << 8;
+    _offsetVoltage = analogRead(_feedbackPin);
+    _offset = _offsetVoltage << 8;
     _dds->setFreq(_baseFreq + _offset);
 
 }
@@ -63,9 +73,10 @@ void LockFreq::initialize(AD9954& dds){
 //      on our feedback pin.
 //  See note above, re: translation to frequency resolution!
 void LockFreq::updateFreq(){
-    int tempOffset = analogRead(_feedbackPin) << 8;
-    if ((_offset - tempOffset) >= (2 << 8)){
-        _offset = tempOffset;
+    int offsetVal = analogRead(_feedbackPin);
+    if (abs(_offsetVoltage - offsetVal) >= _res){
+        _offsetVoltage = offsetVal;
+        _offset = _offsetVoltage << _adMultiplier;
         _dds->setFreq(_baseFreq + _offset);    
     }
 }
