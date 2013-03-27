@@ -32,8 +32,8 @@ SimpleLCD::SimpleLCD(HardwareSerial* lcd){
     
     // Begin serial interface...
    // _lcd->begin(9600);
-    delay(500);
-    SimpleLCD::clearScreen();
+ //   delay(500);
+  //  SimpleLCD::clearScreen();
 }
 
 /* PUBLIC METHODS */
@@ -55,6 +55,10 @@ void SimpleLCD::selectLine(int line){
     }
 }
 
+void SimpleLCD::clearLine(int line){
+    SimpleLCD::selectLine(line);
+    SimpleLCD::write("                ");
+}
 void SimpleLCD::scrollRight(){
         _lcd->write(0xFE);
         _lcd->write(0x20);
@@ -112,9 +116,13 @@ void SimpleLCD::write(int text){
     _lcd->print(text);
 }
 
+void SimpleLCD::write(double text){
+    _lcd->print(text, 6);
+}
 
 // write on line "line", with text "text"
 void SimpleLCD::write(int line, char* text){
+    SimpleLCD::clearLine(line);
     SimpleLCD::selectLine(line);
     SimpleLCD::write(text);
 }
@@ -124,3 +132,10 @@ void SimpleLCD::write(int line, int text){
     SimpleLCD::selectLine(line);
     SimpleLCD::write(text);
 }
+
+void SimpleLCD::write(int line, double text){
+    SimpleLCD::clearLine(line);
+    SimpleLCD::selectLine(line);
+    SimpleLCD::write(text);
+}
+

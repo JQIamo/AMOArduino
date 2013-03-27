@@ -32,12 +32,15 @@ class SimpleLCD
 
         void write(char*);
         void write(int);
+        void write(double);
+        void write(int, double);
         void write(int, int);
         void write(int, char*);
 
 
 
         void clearScreen();
+        void clearLine(int);
         void selectLine(int);
         void scrollRight();
         void scrollLeft();
