@@ -86,3 +86,7 @@ void LockFreq::updateFreq(){
 void LockFreq::updateBaseFreq(unsigned long baseFreq){
     _baseFreq = baseFreq;
 }
+
+void LockFreq::updateCenterFreq(unsigned long centerFreq){
+    _baseFreq = centerFreq -  ((2048/_res) << _adMultiplier);
+}

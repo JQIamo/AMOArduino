@@ -34,6 +34,7 @@ class LockFreq {
         void updateFreq();
         void initialize(AD9954&, unsigned long);
         void updateBaseFreq(unsigned long);
+        void updateCenterFreq(unsigned long);
 
 
     private:
