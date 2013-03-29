@@ -51,10 +51,13 @@ class SimpleLCD
         void boxCursorOn();
         void boxCursorOff();
         void backlight(int);
+
+        void setDecimalCount(int);
         
 
     private:
         HardwareSerial* _lcd;
+        int _decimalPlaces;
 
 };
 

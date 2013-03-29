@@ -29,6 +29,8 @@
 SimpleLCD::SimpleLCD(HardwareSerial* lcd){
 
     _lcd = lcd;
+    _decimalPlaces = 6;
+
     
     // Begin serial interface...
    // _lcd->begin(9600);
@@ -37,6 +39,10 @@ SimpleLCD::SimpleLCD(HardwareSerial* lcd){
 }
 
 /* PUBLIC METHODS */
+
+void SimpleLCD::setDecimalCount(int places){
+    _decimalPlaces = places;
+}
 
 void SimpleLCD::clearScreen(){
     _lcd->write(0xFE);
@@ -117,7 +123,7 @@ void SimpleLCD::write(int text){
 }
 
 void SimpleLCD::write(double text){
-    _lcd->print(text, 6);
+    _lcd->print(text, _decimalPlaces);
 }
 
 // write on line "line", with text "text"
