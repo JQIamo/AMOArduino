@@ -35,6 +35,9 @@ LockFreq::LockFreq(  int feedbackPin, int res, int multiplier ){
     _res = res;
     _adMultiplier = multiplier;
 
+    // Configures arduino for maximum analog resolution, and sets up analog input pin
+    analogReadResolution(12);
+    pinMode(_feedbackPin, INPUT);
 };
 
 // initialize(dds) -- initialize function. 
@@ -45,28 +48,29 @@ LockFreq::LockFreq(  int feedbackPin, int res, int multiplier ){
 // use this in combination with the AD "res" parameter to figure out your
 // channel spacing (ie, digital pot values are spaced by pot "res")
 //      baseFreq: "baseline" frequency, in hertz
-void LockFreq::initialize(AD9954& dds, unsigned long baseFreq){
 
+// If the frequency freq is zero, it initializes from the POT value. otherwise, initializes to given frequency
+void LockFreq::initialize(AD9954& dds, unsigned long baseFreq, unsigned long freq){
     // Assigns the _dds pointer to our DDS
     _dds = &dds;
     _baseFreq = baseFreq;
 
-    // Configures arduino for maximum analog resolution, and sets up analog input pin
-    analogReadResolution(12);
-    pinMode(_feedbackPin, INPUT);
 
-    // Reads out initial offset from baseFreq.
-    // For the time being, the offset is bit-shifted by 8 bits, meaning
-    // 12-bit ADC -> 4096 "points". Bit shifting these by a factor of 2^8 = 256
-    // gives a dynamic range of 1Mhz, with resolution 256 Hz. However, to minimize
-    // jitter in the ADC, the "update frequency" function checks if the new analog 
-    // voltage value is more than 2 (out of 4096) different from previous voltage.
-    // Thus, our real resolution is 2*256 = 512 Hz.
-    _offsetVoltage = analogRead(_feedbackPin);
-    _offset = _offsetVoltage << 8;
+
+    if (freq == 0){
+        // if specified frequency is zero, reads POT value
+        _offsetVoltage = analogRead(_feedbackPin);
+        _offset = _offsetVoltage << _adMultiplier;
+    } else{
+        // else, sets DDS frequency to _baseFreq + freq.
+        // the user can, of course, update this by calling updateFreq() to poll the POT voltage.
+        _offsetVoltage = 0;
+        _offset = freq;
+    }
     _dds->setFreq(_baseFreq + _offset);
-
+    
 }
+
 
 
 // updateFreq() -- updates the frequency output of the DDS by polling the 12-bit ADC voltage
@@ -89,4 +93,8 @@ void LockFreq::updateBaseFreq(unsigned long baseFreq){
 
 void LockFreq::updateCenterFreq(unsigned long centerFreq){
     _baseFreq = centerFreq -  ((2048/_res) << _adMultiplier);
+}
+
+unsigned long LockFreq::getSetpoint(){
+    return analogRead(_feedbackPin) << _adMultiplier;
 }

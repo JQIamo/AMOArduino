@@ -32,9 +32,10 @@ class LockFreq {
 
 
         void updateFreq();
-        void initialize(AD9954&, unsigned long);
+        void initialize(AD9954&, unsigned long, unsigned long);
         void updateBaseFreq(unsigned long);
         void updateCenterFreq(unsigned long);
+        unsigned long getSetpoint();
 
 
     private:
