@@ -40,33 +40,37 @@ JQI - Strontium - UMD
 
 // The *device* address is 1010 (no way to change on 24LC16B) -- these need to 
 // be in MSB position --> use 0x50.
-// I'm leaving this in as a parameter though, for later extension perhaps.
-
+// I'm leaving this in as a #define parameter for now.
 
 #define deviceAddress 0x50
 
-
+// data: an array of bytes of data you'd like to write!
+// length: how many bytes you're writing...
+// NOTE!! currently limited to reads and writes of (up to) 16 bytes at a time
 void MyEEPROMClass::write(int memAddress, const byte * data, byte length){
     byte devAddr = deviceAddress | ((memAddress >> 8) & 0x07); // extracts block, bitwise OR onto device addr.
-    byte addr = lowByte(memAddress); // extracts low byte off memAddress
+                                                                // this is the 7-bit address arduino Wire wants.
 
     Wire.beginTransmission(devAddr); // begin I2C transfer
-    Wire.write(int(addr)); // specify which byte you're starting on
-    for(int i = 0; i < length; i++){
+    Wire.write(memAddress); // specify which memory address you're starting on
+
+    // loops through and writes data; note, will cut you short if you try to write more than 
+    // 16 bytes! This preserves the data integrity of what you've already written on the chip.
+    for(int i = 0; i < length && i < 16; i++){
         Wire.write(data[i]); // write data
     }
     Wire.endTransmission();
     delay(10); // delay so EEPROM chip can persist buffer to memory
 
+
 }
 
 byte MyEEPROMClass::read(int memAddress, byte * buffer, byte length){
     byte devAddr = deviceAddress | ((memAddress >> 8) & 0x07); // extracts block, bitwise OR onto device addr.
-    byte addr = lowByte(memAddress); // extracts low byte off memAddress
 
     // make like you're going to do a write, so EEPROM moves pointer to beginning of readout block
     Wire.beginTransmission(devAddr);
-    Wire.write(int(addr));
+    Wire.write(memAddress);
     Wire.endTransmission(); 
 
     // request bytes from EEPROM
@@ -81,5 +85,5 @@ byte MyEEPROMClass::read(int memAddress, byte * buffer, byte length){
     return i;
 }
     
+// instantiate class, to use as MyEEPROM in arduino sketches.
 MyEEPROMClass MyEEPROM;
-
