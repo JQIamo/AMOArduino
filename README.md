@@ -27,7 +27,7 @@ seemed easier to just use an external EEPROM chip.
 
 ## SimpleLCD
 
-Wrapper class for writing to SparkFun's Serial LCD display: (https://www.sparkfun.com/products/9066)[https://www.sparkfun.com/products/9066]. NOTE: you want the 3.3V version for the Arduino Due!
+Wrapper class for writing to SparkFun's Serial LCD display: [https://www.sparkfun.com/products/9066](https://www.sparkfun.com/products/9066). NOTE: you want the 3.3V version for the Arduino Due!
 
 ## AD536x
 
