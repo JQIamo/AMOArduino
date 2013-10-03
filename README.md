@@ -29,3 +29,6 @@ seemed easier to just use an external EEPROM chip.
 
 Wrapper class for writing to SparkFun's Serial LCD display: (https://www.sparkfun.com/products/9066)[https://www.sparkfun.com/products/9066]. NOTE: you want the 3.3V version for the Arduino Due!
 
+## AD536x
+
+Library for working with Analog devices' AD536x family DACs. Should work with { AD5360, AD5361 }  (16 channels, 16/14 bit DAC) and { AD5362, AD5363 } (8 channels, 14/16 bit DAC).
