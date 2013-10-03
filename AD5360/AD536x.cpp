@@ -86,6 +86,14 @@ void AD536x::write(void)
 	
 }
 
+
+void AD53x::setVoltageWord(int bank, int channel, unsigned int voltageWord)
+{
+    unsigned long int command = (AD536x_WRITE_DAC | AD536x_BANK(bank) | AD536x_CHANNEL(channel) | voltageWord);
+    //AD536x::write(command);
+}
+
+
 // Private Methods
 // Functions used only in this library and not accessibile outside. 
 

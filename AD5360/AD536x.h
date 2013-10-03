@@ -60,11 +60,16 @@ M1	M0	A5	A4	A3	A2	A1	A0	D15	D14	D13	D12	D11 D10 D9	D8	D7	D6	D5	D4	D3	D2	D1(0)	D0
 #define AD536x_BANK1_ALL	1<<15
 #define AD536x_ALL_DACS		2<<15
 
+// alternative format for addressing bank 1 or 0
+#define AD536x_BANK(bank)   (bank+1)<<18
+
+
 //if BANK0 or BANK1 are selected, then A2 to A0 are used to address the particular DAC within a bank
 //The expression {variable}<<15 will care of the correct format of this part of the address
 //IF ALL_DACS BANK0_ALL or BANK1_ALL are selected then bits A2 and A0 are already taken care.
+#define AD536x_CHANNEL(ch)  ch<<15
 
-//Whem AD536x_SPECIAL_FUNCTION is used it is possibile to give complex commands to the AD536x
+//When AD536x_SPECIAL_FUNCTION is used it is possibile to give complex commands to the AD536x
 //including reading from registers!
 //In Special function mode the frame is organized in this way:
 
@@ -119,6 +124,7 @@ class AD536x
   	
     void write(unsigned long int command);
     void doSomething(void);
+    void setVoltageWord(int bank, int channel, unsigned int voltageWord);
 
   // library-accessible "private" interface
   private:
