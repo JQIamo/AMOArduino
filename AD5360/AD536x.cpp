@@ -1,5 +1,5 @@
 /*
-   AD5360.cpp - AD5360 DAC control library 
+   AD536x.cpp - AD536x family DAC control library 
    Created by Alessandro Restelli, 2013
    JQI - Joint Quantum Institute
 

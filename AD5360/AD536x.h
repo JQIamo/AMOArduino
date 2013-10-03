@@ -1,5 +1,5 @@
 /*
-   AD5360.h  - AD5360 DAC control library 
+   AD536x.h  - AD536x family DAC control library 
    Created by Alessandro Restelli, 2013
    JQI - Joint Quantum Institute
 
