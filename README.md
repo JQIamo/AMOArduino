@@ -2,7 +2,7 @@
 
 These are a few arduino libraries we are using in the UMD/JQI AMO group.
 
-More info to come later, but...
+More info to come later, but... here is some basic info.
 
 ## AD9954
 
