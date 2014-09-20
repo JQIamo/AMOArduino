@@ -271,7 +271,7 @@ class SetListDevice : public SetListBase {
 
     public:   
         // Constructor. Pass in a device by reference.
-        SetListDevice(Device * device){
+        SetListDevice(/*Device & device*/){
         Serial.println("creating new device");
             Serial.println(_setlist[0].params[0]);
         Serial.println("i didn't fuck up");
@@ -364,10 +364,10 @@ class SetListArduino {
 		//
 		// Need to verify this doesn't cause shitty memory allocation bugs...
 		template <typename T> 
-		void registerDevice(T * device, int channel){
+		void registerDevice(T & device, int channel){
 		    Serial.println("fuck fuck");
 		    // create new SetListDevice from the device you passed
-		    SetListDevice<typeof(*device)>  newDevice(device); 
+		    SetListDevice<typeof(device)> newDevice;// newDevice(device); 
 		    
 		    // dynamically (at compile-time) reallocate memory for
 		    // _deviceList to accomodate new device.
@@ -376,7 +376,7 @@ class SetListArduino {
 		    
 		    // add new device to _deviceList, increment deviceCount by 1.
 		    //memcpy(_deviceList[channel - 1], newDevice, sizeof(newDevice));
-		    _deviceList[channel - 1] = newDevice;
+		    _deviceList[channel - 1] = & newDevice;
 		    _deviceCount++;
 		    Serial.println(_deviceCount);
 		    Serial.print("channel: ");
@@ -386,12 +386,12 @@ class SetListArduino {
 		    Serial.println(sizeof(SetListBase));
 		    Serial.println("that was base");
 		    Serial.println(sizeof(newDevice));
-		    Serial.println(_deviceList[channel - 1].publicVal);
+		    Serial.println(_deviceList[channel - 1]->publicVal);
 		    Serial.println(newDevice.publicVal);
 		    int thing = newDevice.test();
 		    Serial.println(thing);
 		    Serial.println("this is what i want");
-		    int thing2 = _deviceList[channel - 1].test();
+		    int thing2 = _deviceList[channel - 1]->test();
 		    //Serial.println(sizeof(_deviceList[0]));
 		    //Serial.print("next: ");
 		    Serial.println(thing2);
@@ -457,7 +457,7 @@ class SetListArduino {
         // private variables for actually implementing the setlist
         
         int _deviceCount;
-        SetListBase _deviceList[2];
+        SetListBase * _deviceList[2];
         
 
 

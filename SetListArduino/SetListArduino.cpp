@@ -213,7 +213,7 @@ void SetListArduino::registerCommand(int channel, const char * command, void(*fu
 // firstTrigger - execute setlist callbacks for the first trigger
 void SetListArduino::triggerUpdate(){
     for( int i = 0; i < _deviceCount; i++){
-        _deviceList[i].executeSetList(_line); 
+        _deviceList[i]->executeSetList(_line); 
     }
     // increment line counter.
     _line++;
@@ -309,11 +309,11 @@ void SetListArduino::readSerial(){
                         //Serial.println(typeof(int));
                         Serial.println("ff");
                         Serial.println(_line);
-                        int tt = _deviceList[_activeDevice  - 1].test();
+                        int tt = _deviceList[_activeDevice  - 1]->test();
                         Serial.println("shit shit shit");
                         Serial.println(tt);
                         Serial.println("shit");
-                        (&(_deviceList[_activeDevice-1]))->insertToSetList(_line++,
+                        _deviceList[_activeDevice-1]->insertToSetList(_line++,
                             _commandList[i].function, paramList);
                             Serial.println("h5");
                         matched = true;
