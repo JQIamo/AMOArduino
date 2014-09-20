@@ -212,6 +212,9 @@ void fcmd(){
 #ifndef MAX_SETLIST_LINES
 #define MAX_SETLIST_LINES 512	// defines max number of setlist lines
 #endif
+#ifndef MAX_DEVICE_NUMBER
+#define MAX_DEVICE_NUMBER 6
+#endif
 #ifndef MAX_PARAM_NUM
 #define MAX_PARAM_NUM 8	        // Max number of parameters for given command
 #endif                          // use to initialize command array buffer.
@@ -230,6 +233,13 @@ void fcmd(){
 #endif
 
 
+// This establishes a generic callback function type.
+// Since we don't know initially what device types there are, it casts
+// the device to void*. Later, when the function is inserted into the particular
+// SetListDevice's _setlist, we re-cast void* to the proper type.
+typedef void (*GenericSetListCallback)(void*, int*);
+
+
 /***********************************************
     class SetListBase
 ************************************************/
@@ -242,10 +252,15 @@ class SetListBase {
     public:
         SetListBase();
         virtual void executeSetList(int pos);
-        virtual void insertToSetList(int pos, void(*function)(int *), 
+        virtual void insertToSetList(int pos, void(*function)(void *, int *), 
                                             int * params);
         virtual int test();
         int publicVal;
+        
+        virtual int  getSetListFunc(int pos);
+        virtual int * getSetListParams(int pos);
+        virtual int getSetListLength();
+        virtual void clearSetList();
         
 };        
 
@@ -269,34 +284,40 @@ class SetListBase {
 template <class Device> 
 class SetListDevice : public SetListBase {
 
-    public:   
+    public: 
+    	typedef  void (*SpecificSetListCallback)(Device *, int *) ;
+      
         // Constructor. Pass in a device by reference.
-        SetListDevice(/*Device & device*/){
-        Serial.println("creating new device");
-            Serial.println(_setlist[0].params[0]);
-        Serial.println("i didn't fuck up");
-        publicVal = 7;
+        SetListDevice(Device & device)
+        : _setlistLength(0)
+        {
+        	_device = & device;
+			#ifdef SETLIST_DEBUG
+				Serial.println("Creating new device");
+			#endif        
         }
-        //int publicVal;
+       
         int test(){
-        Serial.println("shit should be 10"); 
+        	Serial.println("This should be 10. It is indeed "); 
             int crap = 10;
-        return crap;} 
+        	return crap;
+        } 
+        
+        
     	// insertToSetList -- appends a callback to the device's setlist.
     	//      pos: position in _setlist to place callback
     	//      function: actual callback function
     	//      params: list of parameters to the callback function
-    	void insertToSetList(int pos, void(*function)(int *), int * params){
-    	    // check that item you are appending is different from previous
-    	    // setlist item
-    	    Serial.println("h6");
+    	
+    	void insertToSetList(int pos, GenericSetListCallback function, int * params){
+    	    
+    	    // check that line you are appending is different from previous
     	    bool eq = false;
-    	    Serial.println("h7");
-    	    if ((pos != 0) && (_setlist[pos - 1].function == function)){
-    	        Serial.println("h8");
+    	    if ((pos != 0) && (_setlist[pos - 1].function == 
+    	    			reinterpret_cast<SpecificSetListCallback>(function))){
     	        eq = true;
-    	        // now check if params are equal. If any of them differ, 
-    	        // set eq = false and break.
+    	        
+    	        // now check if params are equal..
     	        for(int i = 0; i < MAX_PARAM_NUM; i++){
     	            if(_setlist[pos - 1].params[i] != params[i]){
     	                eq = false;
@@ -305,38 +326,71 @@ class SetListDevice : public SetListBase {
     	        }
     	    }
     		if (!eq) {
-    		    _setlist[pos].function = function;
+    		    
+    		   
+    		    //cbtype * ff = static_cast <cbtype*>(function);
+    		    _setlist[pos].function = reinterpret_cast 
+    		    		<SpecificSetListCallback>(function);
     		} else {
-    		    ;//_setlist[pos].function = _holdValue;
+    		    _setlist[pos].function = _holdValue;
     		}
     		// copy param list into SetListCallback...
-    		memcpy(_setlist[pos].params, params, MAX_PARAM_NUM);
+    		memcpy(_setlist[pos].params, params, sizeof(params)*MAX_PARAM_NUM);
+    		// increment setlistLength by 1
+    		
+    		_setlistLength++;
     	}
     	
+    	int  getSetListFunc(int pos){
+    		return (int)_setlist[pos].function;
+    	}
+    	
+    	int * getSetListParams(int pos){
+    		return _setlist[pos].params;
+    	}
+    	
+    	int getSetListLength(){
+    		return _setlistLength;
+    	}
     		
     	void executeSetList(int pos){
     	    //int * params = _setlist[pos].params;
-    	    (* _setlist[pos].function)(_setlist[pos].params);
+    	    
+    	    // make sure you aren't calling a line that is out of bounds!
+    	    if (pos < _setlistLength) {
+    	    	(* _setlist[pos].function)(_device, _setlist[pos].params);
+    	    } else {
+    	    	#ifdef SETLIST_DEBUG
+    	    		Serial.print("Line out of range. This device only has ");
+    	    		Serial.print(_setlistLength);
+    	    		Serial.println(" setlist lines.");
+    	    	#endif
+    	    }
     	}
 	
 		// clearSetList: clears current setlist table
-		void clearSetList(){;}
+		void clearSetList(){
+			_setlistLength = 0;
+		}
 		
 	private:
+	
+		// pointer to the actual device
+		Device * _device;
 	    
+	    // Setlist callback; struct for storing setlist lines.
 	    struct SetListCallback {
-	        //int paramNum;
 	        int params[MAX_PARAM_NUM];
-	        //void (*function)(int params[8]);
-	        void (*function)(int *);
+	        void (*function)(Device *, int *);
 	    };
 	    
 	    // the "don't update anything" function.
-	    void _holdValue(int * params){;}
+	    static void _holdValue(Device *, int * params){;}
 	    
-	    // list of pointers to callback functions & parameters
+	    // the setlist... a list of pointers to callback functions & params
 	    SetListCallback _setlist[MAX_SETLIST_LINES];
 	    
+	    int _setlistLength;
 	    
         
 };
@@ -361,44 +415,82 @@ class SetListArduino {
 		// register a device with SetListArduino.
 		// Pass the device in by reference, and specify the channel number
 		// you set up in SetList on the computer.
-		//
-		// Need to verify this doesn't cause shitty memory allocation bugs...
-		template <typename T> 
-		void registerDevice(T & device, int channel){
-		    Serial.println("fuck fuck");
-		    // create new SetListDevice from the device you passed
-		    SetListDevice<typeof(device)> newDevice;// newDevice(device); 
+		template <typename Device> 
+		void registerDevice(Device & device, int channel){
 		    
-		    // dynamically (at compile-time) reallocate memory for
-		    // _deviceList to accomodate new device.
-		    //_deviceList = (SetListBase *) realloc(_deviceList,
-		                   // sizeof(_deviceList) + sizeof(newDevice));
-		    
-		    // add new device to _deviceList, increment deviceCount by 1.
-		    //memcpy(_deviceList[channel - 1], newDevice, sizeof(newDevice));
-		    _deviceList[channel - 1] = & newDevice;
-		    _deviceCount++;
-		    Serial.println(_deviceCount);
-		    Serial.print("channel: ");
-		    Serial.println(channel);
-		    Serial.println(sizeof(_deviceList));
-		    Serial.println("yep");
-		    Serial.println(sizeof(SetListBase));
-		    Serial.println("that was base");
-		    Serial.println(sizeof(newDevice));
-		    Serial.println(_deviceList[channel - 1]->publicVal);
-		    Serial.println(newDevice.publicVal);
-		    int thing = newDevice.test();
-		    Serial.println(thing);
-		    Serial.println("this is what i want");
-		    int thing2 = _deviceList[channel - 1]->test();
-		    //Serial.println(sizeof(_deviceList[0]));
-		    //Serial.print("next: ");
-		    Serial.println(thing2);
+		    // check that channel is in range...
+		    // still have to be careful, because Arduino will segfault if
+		    // you try to make calls to device channels which haven't been
+		    // registered.
+		    if (channel >= 0 && channel < MAX_DEVICE_NUMBER){	    
+				#ifdef SETLIST_DEBUG
+					Serial.println("Initializing new device...");
+				#endif
+			
+			// create new SetListDevice from the device you passed.
+			// Fun fact I learned: pay attention to whether this is created
+			// on the stack or the heap! Here, because we want the SetListDevice
+			// to stick around, it should be allocated a memory block in the
+			// heap, not just placed on the stack, which is what would happen if
+			// you did "SetListDevice<Device> newDevice()".
+			
+				SetListDevice<typeof(device)> * newDevice = new SetListDevice<typeof(device)>(device);	
+			
+			
+				_deviceList[channel] = newDevice;
+				_deviceCount++;
+			
+				#ifdef SETLIST_DEBUG
+					Serial.print("Device created on channel ");
+					Serial.println(channel);
+					Serial.print("Device total: ");
+					Serial.println(_deviceCount);
+				#endif
+			} else {
+				#ifdef SETLIST_DEBUG
+					Serial.print("Invalid channel: ");
+					Serial.println(channel);
+				#endif
+			}
 		};
         
         
-        void registerCommand(int channel, const char * command, void(*function)(int *));
+        //
+      
+ 
+//void SetListArduino::registerCommand(int channel, const char * command, void(*function)(void *, int *))
+        
+          
+        // registerCommand() -- adds a command to the list of "recognized" 
+		// SetListArduino commands. This should be taken care of in the setup()
+		// portion of our Arduino sketch.
+
+		// channel: which device channel to register the command with
+		// command: "short command" to be sent from SetList over serial.
+		// function: name of the function to use in the callback
+		// 			This function must take a reference to a parameter list, eg,
+//              	void myCallbackFunc(int * params){ ... }
+        //template <typename Device>
+        //void registerCommand(int channel, const char * command, void(*function)(Device *, int *)){
+        template <typename CB>
+        void registerCommand(int channel, const char * command, CB function){
+    // reallocate memory block to accomodate newly registered serial command;
+    _commandList = (SerialCommandCallback *) realloc(_commandList, 
+                        (_commandCount + 1)*sizeof(SerialCommandCallback));  
+    
+    // copy new command into _commandList
+    strncpy(_commandList[_commandCount].command, command,
+                        SERIALCOMMAND_MAXCOMMANDLENGTH);
+    
+    _commandList[_commandCount].channel = channel;
+    //_commandList[_commandCount].function = reinterpret_cast<mf>(function);
+    _commandList[_commandCount].function = reinterpret_cast<GenericSetListCallback>(function);
+    _commandCount ++; // increment count by 1
+}
+        
+        
+        
+        
         
         void clearSetList();
         int getTriggerChannel();
@@ -418,47 +510,64 @@ class SetListArduino {
         volatile int _line;	    // next setlist line. Volatile since it'll be 
 		                        // updated from an attachInterrupt routine.
 		
-		int _setlistLength;    // Length of current setlist (# of lines);
+		int _setlistLength;    	// Length of current setlist (# of lines);
 		                        // this better be less than MAX_SETLIST_LINES!
 
-        int _triggerChannel;
+        int _triggerChannel;	// For Arduino Due, this is the interrupt pin
+        						// that the ISR will be attached to.
+        						// For certain other arduinos, this should be  
+        						// the ISR number; see documentation for 
+        						// attachInterrupt() for more info.
+        						// SetListArduino calls something like
+        			// attachInterrupt(_triggerChannel, (*ISRFunc)(), CHANGE);
         
         
         // private variables for serial parsing
         
+        // This struct maps serial command -> device channel & callback func
         struct SerialCommandCallback {
             char command[SERIALCOMMAND_MAXCOMMANDLENGTH + 1];
             int channel;
-            void (*function)(int *);
+            //mf function;
+            GenericSetListCallback function;
+            //good; void (*function)(void *, int *);
+            //void* function;
         };
         
         SerialCommandCallback * _commandList;
         
-        
         char _serialTerm;       // Line termination character. Defaults to "\n".
-        char _buffer[SERIALCOMMAND_BUFFER + 1];    // Buffer for serial chars
+        
+        char _buffer[SERIALCOMMAND_BUFFER + 1];    	// Buffer for serial chars
                                                     // while waiting for term.
-        int _bufPos;        // Current position in the serial buffer
-        char _delim[2];     // Text delimiter; defaults to " " (null terminated)
-        char * _last;       // state variable used by strtok_r during text
-                            // processing.
-        int _commandCount;  // keeps track of total registered commands
+        int _bufPos;        	// Current position in the serial buffer
+        char _delim[2];     	// Text delimiter; defaults to " "
+        char * _last;       	// state variable used by strtok_r  
+                            	// during text processing.
         
+        int _commandCount;  	// keeps track of registered command total
         int _activeDevice;      // channel of "active" device
-        char _activateCmd[2];   // command to activate device.
-                                // set in constructor function, but should
-                                // default to "@", ie, "@ 1" to activate device
-                                // on channel 1. 
-        char _initRunCmd[2];    // short command for arduino to prepare to
-                                // receive triggers. Set in constructor, but
-                                // defaults to "$" for start.
         
+        // command to "activate" particular channel for writing setlist
+        // expects a single parameter; eg, "@ 0" or "@ 1" to activate channel
+        // 0 and 1, respectively.
+        static const char _activateDeviceCmd = '@';   
+
+        // command to initialize a run; prepares arduino to receive triggers.
+        static const char _initRunCmd = '$';    
         
+        // command to echo back setlist to serial terminal.
+        static const char _echoSetListCmd = '?';
+        
+        // command to execute a particular setlist line.
+        // expects 2 parameters, eg, "# 0 3" would execute line 3 on channel 0.
+        static const char _executeSingleLine = '#';	
+
+
         // private variables for actually implementing the setlist
-        
         int _deviceCount;
-        SetListBase * _deviceList[2];
-        
+        SetListBase * _deviceList[MAX_DEVICE_NUMBER];
+        bool _errorFlag;
 
 
 };
@@ -479,7 +588,7 @@ class SetListArduino {
 // to call the trigger interrupt methods on. In order for everything to work, 
 // we had to pre-decide on what the singleton SetListArduino instance should be
 // called; Dan and I decided SetListImage made the most sense. Thus, in the .cpp
-// file, you'll see a declaration "extern SetListArduino SetListImage;"
+// file, you'll see the declaration "extern SetListArduino SetListImage;"
 // Then, these SetListISR static methods will call functions on the object
 // SetListImage. All works as expected, but in the arduino sketch you'll be
 // forced to use the name SetListImage, which is hopefully a *very* minor
