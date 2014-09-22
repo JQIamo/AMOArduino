@@ -80,18 +80,20 @@
 	\sa SetListArduino
 */
 #ifndef SETLIST_ERROR_CHECK
-#define SETLIST_ERROR_CHECK 1   // error check serial commands
+#define SETLIST_ERROR_CHECK     // error check serial commands
 #endif                          // pass "ok" to labview if ok, and some error
                                 // string if not ok.
 
-//! Boolean to enable/disable debug information.
-/*!
+// Boolean to enable/disable debug information.
+/*
 	If true, SetListArduino will print back debug information to the serial 
 	terminal.
 */
+/*
 #ifndef SETLIST_DEBUG
-#define SETLIST_DEBUG 1
+#define SETLIST_DEBUG
 #endif
+*/
 
 
 // This establishes a generic callback function type.
@@ -135,8 +137,7 @@ class SetListBase {
         virtual void executeSetList(int pos);
         virtual void insertToSetList(int pos, void(*function)(void *, int *), 
                                             int * params);
-        int publicVal;
-        
+                                            
         virtual int  getSetListFunc(int pos);
         virtual int * getSetListParams(int pos);
         virtual int getSetListLength();
