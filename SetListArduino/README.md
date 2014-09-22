@@ -119,112 +119,222 @@ void loop(){
 }
 ~~~~~~~~~~~~~~~~~~~~
 
+## Limitations & Important Notes
 
+There are a few `#define` statements in `SetListArduino.h` to be aware of.
+If you want to overwrite these, do so before including `SetListArduino.h` in
+your Arduino sketch.
 
-# Temporary Notes; clean up and integrate!
+* `#define MAX_SETLIST_LINES 512` -- SetList array size; don't make a setlist with more than 512 lines!
+* `#define MAX_DEVICE_NUMBER 6` -- deviceList array size. If you want more than 6 devices connected to a single Arduino, you'll need to increase this.
+* `#define MAX_PARAM_NUM 8` -- Parameter array size. This limits the number of parameters that will be parsed from the serial stream; if you need more than 8, be sure to redefine this!
+* `#define SERIALCOMMAND_BUFFER 512` -- Buffer length for serial commands. This limits a single serial line to 512 characters, which should hopefully be enough.
+* `#define SERIALCOMMAND_MAXCOMMANDLENGTH 8` -- Max length of "short command." But to be economical, you should try to limit your short commands to a single character.
+* `#define SETLIST_ERROR_CHECK 1` -- Sends error info back to LabView
+* `#define SETLIST_DEBUG` -- If you want debug info printed back to the serial stream, make sure to define this.
 
-* can't have an arduino-controlled ramp line on first line of setlist
+### Device Channels - Important!
 
-Why? because currently it should put the devices into the state of the first setlist line as soon as labview calls "$". However, check that this is actually implemented in the library code. Also maybe think of a better way to trigger the start of a run, so this isn't a problem...
+The "device channel" (see `registerDevice()` below) corresponds directly to an
+index in _deviceList. Thus, make sure your channels start at 0 and are
+sequential. If you don't do this, the Arduino may segfault as it tries to 
+execute functions in memory that has not been properly initialized.
 
+### No "ramp" on first SetList line
 
-## Original Description
+Because of idiosyncrasies in how we decided to trigger the Arduino, 
+SetListArduino will immediately initialize all devices with the callback
+given on the first line, and wait for a falling edge trigger to move to line #2.
+Thus, if you have some non-static output behavior on line #1, it will begin
+before the official "start" of the cycle.
 
-Basic definitions of what I want to implement:
+The reason for this triggering behavior is that SetList (LabView edition) passes
+a single state per SetList line to a slaved digital channel on the PulseBlaster;
+if your SetList has an odd number of lines, you might end in the same state as 
+the first SetList line, and thus not actually send a trigger for the first line.
 
-Arduino devices are triggered by Slaved Digital channels from SetList.
-This means they get at most one trigger per line. As envisioned, SetList
-will only provide a trigger pulse when the Arduino needs to step to the next 
-output value. 
+Ultimately, this is a bug which should be fixed.
 
-Currently, we have the Arduino controlling a few different devices in the
-lab.
+### SetListImage vs SetListArduino
+
+`SetListArduino` is the name of the class which orchestrates the SetList
+computer control, while `SetListImage` is the instance name you want to use.
+
+Doing it this way allows us to actually attach trigger interrupts properly,
+since the interrupts need to know which class instance methods to call. Since
+`SetListArduino` really should be a singleton class, requiring the name you use
+to be `SetListImage` fixes this issue.
+
+## General comments on SetListArduino library structure
+
+The SetListArduino library has two main classes: `class SetListArduino` and
+`class SetListDevice`. The class `SetListArduino` is what you mainly have to 
+worry about when coding an Arduino sketch; it orchestrates all of the 
+communication between LabView and the controlled devices connected to your 
+Arduino.
+
+`SetListDevice` is a templated class which inherits from a generic class 
+`SetListBase` (which does nothing by itself). When you register a device by
+calling `SetListImage.registerDevice(...)`, `SetListArduino` will create an 
+instance of `SetListDevice`. This instance of `SetListDevice` contains the 
+SetList and pointers to any callbacks necessary to execute said SetList.
+
+To make this more concrete, consider a DDS-type device we want to control (like
+in the example sketch above). Say I have already instantiated the device itself, 
+call it `DDS1`. To make it computer controllable, I first need to register it
+with the singleton class object, `SetListImage`:
+
+~~~~~~~~~~{.cpp}
+SetListImage.registerDevice(DDS1, 0);
+~~~~~~~~~~
+
+`SetListArduino` has now added the object `DDS1` to position 0 in an array 
+data member it owns called `_deviceList`. I can register more devices if I wish,
+being sure to use sequentially increasing channel numbers so they are inserted
+properly into the array `_deviceList`.
+
+Now, when I register a command, I need to tell the Arduino what serial 
+character it should listen to during SetList programming, and what it should
+do when it receives such a command. To this effect, I use
+
+~~~~~~~~~~{.cpp}
+// registerCommand(const char * command, int channel, Callback function)
+SetListImage.registerCommand("f", 0, setDDSFreq);
+
+// somewhere else in your sketch...
+
+void setDDSFreq(AD9954 * dds, int * params){
+...
+}
+~~~~~~~~~~
+
+The callback function, `setDDSFreq`, must take two arguments: a pointer of 
+the same type as the device you're trying to control (here it is `AD9954`), and
+an `int *` pointer to a list of parameters. When a particular SetList line is 
+executed, `SetListDevice` will call that function and pass it a pointer to 
+your device (ie, DDS) and a pointer to the parameter array.
+
+### Serial programming sequence of events
+
+Once you've uploaded your sketch with all the devices registered and command 
+callbacks defined, etc., this is an example of what it expects to see from the
+serial stream:
+
+~~~~~~~~~~
+@ 0
+f 100000
+f 150000
+f 150000
+f 500000
+@ 1
+r 100 200 500
+f 50000
+r 100 200 700
+r 200 200 200
+$
+~~~~~~~~~~
+
+What this means (and see the special short command summary in the next section)
+is: 
+
+* "Activate channel 0 for setlist programming"
+* Programs 4 setlist lines with short command `f`, each taking a single parameter
+* "Activate channel 1 for setlist programming"
+* Programs 4 setlist lines; some have short command `r`, some short command `f`; short command `r` takes 3 arguments.
+* Initialize for sequence to begin with command `$`.
+
+Something worth noting: If you have, eg, 2 DDS devices on the same Arduino, you
+don't need to create separate callback functions for the same behavior. As long 
+as you register both, you can use the same callback. For example,
+
+~~~~~~~~~~{.cpp}
+SetListImage.registerCommand("f", 0, setDDSFreq);
+SetListImage.registerCommand("f", 1, setDDSFreq);
+SetListImage.registerCommand("f", 2, setPLLFreq);
+~~~~~~~~~~
+
+Here, there are two different DDSs which implement the same kind of behavior
+(ie, "set a single-tone frequency"). They are on channels 0 and 1, so we
+register that behavior with `SetListArduino`. There is also a PLL, which we 
+might want to use the same short command for (eg, "f" for "frequency", to set
+a single-tone output frequency). But, because it is a different device type, we
+need a separate callback `setPLLFreq` which we would define elsewhere like
+
+~~~~~~~~~~{.cpp}
+void setPLLFreq(PLLDevice * pll, int * params){
+    pll->setPLLFreq(params[0]);
+}
+~~~~~~~~~~
+
+or something similar. Hopefully you're starting to get the gist.
+
+## Special short commands
+
+There are a few specially reserved short commands:
+
+* `@` - activates a new device, eg, `@ 1` activates device on channel 1.
+* `$` - initializes for new cycle. Call this when you want the Arduino ready to receive triggers from the PulseBlaster.
+* `?` - echo setlist back to serial terminal.
+* `#` - execute single setlist line, eg, `# 0 5` executes (index) line 5 on channel 0. Note this is the *index* of the line, not the line number -- the index counts from 0.
+
+## Triggering requirements
+
+Currently, as discussed briefly above, `SetListArduino` immediately outputs
+the state for the first line after receiving the serial command `$` indicating
+a sequence is beginning. It advances to the next line upon a falling-edge
+trigger, and then switches the interrupt to listen for a falling- or 
+rising-edge. 
+
+When it encounters said trigger, an ISR routine jumps in and loops over the 
+list of registered devices, calling `_deviceList[index]->executeSetList(_line)`
+to execute the callbacks for the next line.
+
+Because this is a single-threaded microcontroller, be cognizant of timing 
+delays! In a spot check, it looks like a "simple" device which just toggles
+the output of a digital pin on the Arduino, there was a 6.25 us delay between 
+the trigger edge and the pin state change. Depending on how many devices you
+have connected and how fast the Arduino can update each device, there may 
+be a substantially longer delay before it actually updates an output.
+
+For this reason, you also don't want triggers to come too soon after each other!
+As always, test offline before stretching to the limit.
+
+At any rate, LabView should provide a single state change trigger for each ramp
+line in SetList where some controlled device needs to change its output. Thus,
+as long as you aren't changing outputs too quickly, you should be fine. Just be
+careful it is doing what you expect.
+
+## Implementing Arduino I/O as a device
+
+As alluded to above, you can actually use the digital/analog output pins on the
+Arduino itself. Just register a device of type `int` (or some other dummy 
+class). Then, in the callback function, change the output of your line as 
+desired. You can get creative!
+
+## Future Development
+
+For better timing, we might consider implementing a feature where the Arduino
+pre-programs a device (eg, AD9954 DDS) before the next SetList trigger. When
+the trigger arrives, it simply has to trigger a (fast) digital IO update on the 
+controlled device. Or, if we care even more about timing, we could implement
+additional SlavedDigital channels in LabView to trigger the actual device IO 
+update. At some level, however, it becomes necessary to use an FPGA for precise
+timing applications.
+
+## Sr Lab Arduino-controlled devices...
+
+Currently, we have the Arduino controlling a few different devices in the Sr
+lab. These libraries are also in the AMOArduino repository, and documentation
+of the hardware should be on the [JQI wiki](https://jqi-wiki.physics.umd.edu).
 
 * DDS boards
   * Output single-tone frequencies
   * Output linear frequency sweeps
   * More complex functionality can be implemented (see AD9954 library).
+* ADF4350 PLLs
+* ADF4107 PLLs, other Analog Devices PLL chips in use for OPLL Beatnote locking
 * AD536x DACs
   * Library still needs some polishing; control 8- or 16-channel DAC chips from Analog Devices.
   * Again, could output single voltage or interpolated sweep. However, the intention here is to use these for analog channels that don't need updating during a cycle.
-	  
-All of this to say, what functionality should the SetList library include?
 
-The SerialCommand library provides a nice hook for delegating serial
-commands to specific functions. Either re-factor this into SetListArduino,
-or incorporate it. Need to figure out exactly how the "Native USB" arduinos
-handle serial communication, or if there is still some optimization that can
-be done?
-
-Ok, here's a swing at some software definition use cases:
-
-In an Arduino sketch, the user should be able to define an array of 
-"controlled devices" which the Arduino is connected to.
-
-For each controlled device, the user should be able to map "short commands"
-from the serial interface to setter methods on the device. The arguments
-(see eg SerialCommand library) should come in the same order as required by 
-the device setter function.
-
-In LabView, the user should be able to parse the SetList table into a list
-of serial commands to send to the Arduino. A block of serial commands should
-be prefaced by "@ (int) DeviceUID (int) numCommands", where the DeviceUID 
-corresponds to an array index of the controlled devices array, and
-numCommands corresponds to the number of commands it is expecting.
-
-Once LabView specifies the device and number of commands it will send, it 
-loops through and sends each command.
-
-After the commands have been sent, LabView should indicate the device should
-be initiated. Arduino will program that device to the state given by the
-first command, and wait for the first falling edge of its Slaved Digital
-line to begin stepping through a command list.
-
-LabView should require the Slaved Digital line to be high on the first step
-of a cycle; this way, Arduino can wait for a falling edge to know the cycle
-has started. Arduino will then switch interrupt routines to listen for a
-change on that pin, and call the setter method for each of the controlled
-devices as necessary.
-
-Question: for an Arduino controlling multiple devices, do we use multiple 
-Slaved Digital pseudo-triggers, or somehow negotiate the updating with a
-single trigger line?
-
-Here's a better idea for a more general SetListArduino device:
-
-* LabView implements the class Device > Arduino, which has variable number of "channels," each of which can have a variable number of Columns (regular or digital) configurable by the user.
-* One of these columns can specify a short command; eg, "r" for ramp or "f" for frequency output. If only one type of behavior is allowed (eg, "voltage" output), then user can configure a default short command.
-* LabView's Arduino class 
-* The user, in setting up the device, now just has to negotiate command mappings to controlled devices' setter functions. eg:
-  
-SetListArduino.registerCommand("f", channelNum, &setFreq, argumentNum);
-  
-Now, upon encountering short command "f", SetListArduino would parse out
-however many arguments are expected by argumentNum, pass that to setFreq,
-and apply it to the controlled device in the specified channelNum.
-
-To deal with timing issues, we might want to implement a "delayed update"
-functionality, ie, using the I/O update pin on the DAC or similar. Thus, 
-upon receiving a trigger, the Arduino immediately propagate an I/O update 
-on each of the devices, then write the n+1 instruction in the SetList to
-prep for the next output.
-
-This might be facilitated by having an additional reserved short command,
-"h", to hold previous value (ie, don't trigger the I/O update).
-
-It would be nice too if we had a manual controls equivalent -- must ask 
-Creston or Zach how manual controls is integrating new devices.
-
-But, could consider a situation where "update hardware" in manual controls
-puts the Arduino in a different state, where it instantaneously updates
-the output of a given channel, eg, with the command "@m".
-For example, update hardware -> "@m", then the sequence of commands
-eg, f 1 100; r 2 100 200 ...; etc. After each command is received, it 
-knows to update NOW rather than wait for a triggered pulse. To put the 
-Arduino back into cycle control, it would just wait for the negotiation of
-a new SetList via "@ (int)channelNum (int)numCommands", etc.
-
-This hopefully catches a pretty broad swath of uses, and will be
-customizable enough to be reusable.
-  
 
