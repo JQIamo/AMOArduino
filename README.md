@@ -1,8 +1,15 @@
 # Arduino libraries
 
-These are a few arduino libraries we are using in the UMD/JQI AMO group.
+These are a few arduino libraries we are using at the JQI. Hopefully they are useful to others, too! The idea is
+to make it easy to interface with various instruments in the lab (frequency sythesizers, DACs/ADCs, etc).
 
-More info to come later, but... here is some basic info.
+Some of these libraries are in flux, so your mileage may vary! If you see a bug or would like to contribute, open an
+issue or send us a pull request.
+
+For library-specific documentation information, check out the [Doxygen Documentation](http://jqiamo.github.io/AMOArduino). 
+There is also lots of good info in the README files for each library.
+
+Send questions to [npisenti] at [umd].
 
 ## AD9954
 
