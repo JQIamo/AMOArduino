@@ -1,11 +1,149 @@
-# SetListArduino
+# README
 
-## Notes
+## Overview
+
+SetListArduino is an Arduino library designed to provide easy integration for
+Arduino-controlled devices into the SetList computer control software used at
+the JQI. To set up a new Arduino device for SetList control, simply "register"
+the device with SetListArduino in your sketch, and provide as many callback 
+functions as you need to implement the desired functionality. SetListArduino
+orchestrates the communication between LabView's SetList and each registered 
+device, executing the appropriate callback function for each new line passed
+from SetList.
+
+For examples and more details, see below!
+
+## Example Sketch
+
+Here is a short sketch to illustrate how one might integrate an AD9954 DDS 
+board. 
+
+    #include <SPI.h>
+    #include <AD9954.h>
+	#include <SetListArduino.h>
+	
+	// Instantiate setlist object.
+	// Note, it must be called SetListImage for trigger interrupts to work.
+	
+	#define triggerChannel 13
+	SetListArduino SetListImage(triggerChannel); 
+	
+	
+
+	
+	
+	
+	// Instantiate DDS object, using the AD9954 library.
+	// Exact instantiation depends on how DDS is connected.
+	// This could just as easily be any other device the 
+	// Arduino knows how to communicate with, or even the
+	// digital/analog outputs of the Arduino itself! 
+	// SetListArduino is completely device-agnostic, which 
+	// allows for easy extensibility.
+    
+    #define D1IOUPDATE 2
+    #define D1PS1 3
+    #define D1PS0 4
+    #define D1OSK 5
+    #define D1SS 6
+    #define D1RESET 7
+    
+	AD9954 DDS(D1SS, D1RESET, D1IOUPDATE, D1PS0, D1PS1, D1OSK);    
+
+
+
+    // Callback function to set a particular DDS frequency
+    // We know that LabView will pass a single parameter for the frequency, thus
+    // we want to pull freq = params[0].
+    void setDDSFreq(AD9954 * dds, int * params){
+        dds->setFreq(params[0]);
+    }
+
+
+    // Callback function to initiate a DDS ramp.
+    // Say we set this up so LabView will pass the parameters 
+    // [freq0, freq1, tau] where tau is the ramp time.
+    // Here, we do a few calculations, initialize the pins, and call linearSweep
+    // on the DDS. The Arduino is controlling PS0 to do the sweep; see AD9954
+    // for details.
+    void rampDDS(AD9954 * dds, int * params){
+        int f0 = params[0];
+        int f1 = params[1];
+        int tau = params[2];
+        
+        double rampRate;
+        
+        int delta = f1 - f0;    // calculate delta frequency
+        int RR = 1;             // number of SYS_CLK cycles to spend at each
+                                // intermediate frequency
+        rampRate = ((double) delta)/tau;   // Hz per second
+        int posDF = (int)(rampRate * RR * 100E-9);   // calculate posDF for DDS
+        
+        // this is implemented in the AD9954 library; see that
+        // documentation for details.
+        
+        dds->linearSweep(f0, f1, posDF, RR, posDF, RR);
+        digitalWrite(D1PS1, HIGH);  // DDS starts sweeping...
+    
+    }
+
+
+	void setup(){
+		
+		Serial.begin(9600);
+		
+		SPI.begin();
+		SPI.setClockDivider(4);
+		SPI.setDataMode(SPI_MODE0);
+		
+		DDS.initialize(400000000);  // Start DDS with 400MHz clock
+		
+		/*****************************************
+		    SetListArduino Part!
+		******************************************/
+		
+		// Register the DDS device with SetListImage.
+		// First argument is device (passed by reference);
+		// Second argument is the "channel number", which must match
+		// what you entered in LabView. See README for more details.
+		SetListImage.registerDevice(DDS, 0);
+		
+		// Register as many callback functions as you need...
+		// This says the short-command "f" on channel 0 should execute
+		// the callback function setDDSFreq().
+		SetListImage.registerCommand("f", 0, setDDSFreq);
+		
+		// Here is another callback function, providing a method to 
+		// execute DDS ramps. Note, the short-command is different, but
+		// we still want this functionality for our DDS on channel 0.
+		// If we had a second DDS, say on channel 1, we would have to do a 
+		// second SetListImage.registerCommand("r", 1, rampDDS);
+		SetListImage.registerCommand("r", 0, rampDDS);
+		
+	
+	
+	}
+
+	void loop(){
+		SetListImage.readSerial();  // listen for & process serial commands 
+								    // from computer
+	}
+
+
+
+
+
+
+
+
+# Temporary Notes; clean up and integrate!
 
 * can't have an arduino-controlled ramp line on first line of setlist
 
 Why? because currently it should put the devices into the state of the first setlist line as soon as labview calls "$". However, check that this is actually implemented in the library code. Also maybe think of a better way to trigger the start of a run, so this isn't a problem...
 
+
+## Original Description
 
 Basic definitions of what I want to implement:
 
@@ -104,66 +242,4 @@ a new SetList via "@ (int)channelNum (int)numCommands", etc.
 This hopefully catches a pretty broad swath of uses, and will be
 customizable enough to be reusable.
   
-TODO: 
-* Write library!
-* Keep track of functions that a "controllable" Arduino device library must implement to be compatible with SetListArduino to be useable...  is there a way for the compiler to know this? I suppose it'll throw an error if the function isn't there, so no worries.
-* Document it!
-
-
-Example sketch behavior:
-	
-	#include <SetListArduino.h>
-	
-	SetListArduino SetList(triggerChannel); // instantiate setlist object
-	
-	AD9954 DDS1(...);
-	
-	
-	
-	
-	union {
-	    DDS dds;
-	    PLL pll;
-	    } obj;
-	    
-	    obj.d
-	
-	void setup(){
-		SetListImage.registerDevice(DDS1, 0);
-		SetListImage.registerDevice(DDS2, 1); // etc.; (Device, channelNum)
-		SetListImage.registerDevice(PLL1, 2);
-		
-		SetList.registerCommand("f", 0, &setFreq, 1); // command "f"
-						// for device on channel 0, will call DDS1.setFreq(...)
-						// with a single argument.
-		// etc.
-		
-		
-	
-	
-	}
-	
-	void setFreq(int frequency){...}
-	
-	void loop(){
-		SetList.readSerial();	// listen for & process serial commands 
-								// from computer
-	}
-
-
-
-
-
-
-NOTES!!
-
-Ok, some things that need doing:
-
-Arduino-controllable devices should inherit from a parent "ControlledDevice"
-class. to still use libraries that we didn't write, figure out an easy way
-to encapsulate said library into this type. That way, can have an array
-of "ArduinoControlledDevices".
-
-Ugh, actually, that'll still be an issue if we want compiler errors when
-a given function is not defined.
 
