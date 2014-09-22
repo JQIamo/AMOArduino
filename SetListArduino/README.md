@@ -18,117 +18,118 @@ For examples and more details, see below!
 Here is a short sketch to illustrate how one might integrate an AD9954 DDS 
 board. 
 
-    #include <SPI.h>
-    #include <AD9954.h>
-	#include <SetListArduino.h>
-	
-	// Instantiate setlist object.
-	// Note, it must be called SetListImage for trigger interrupts to work.
-	
-	#define triggerChannel 13
-	SetListArduino SetListImage(triggerChannel); 
-	
-	
+```C++
+#include <SPI.h>
+#include <AD9954.h>
+#include <SetListArduino.h>
 
-	
-	
-	
-	// Instantiate DDS object, using the AD9954 library.
-	// Exact instantiation depends on how DDS is connected.
-	// This could just as easily be any other device the 
-	// Arduino knows how to communicate with, or even the
-	// digital/analog outputs of the Arduino itself! 
-	// SetListArduino is completely device-agnostic, which 
-	// allows for easy extensibility.
+// Instantiate setlist object.
+// Note, it must be called SetListImage for trigger interrupts to work.
+
+#define triggerChannel 13
+SetListArduino SetListImage(triggerChannel); 
+
+
+
+
+
+
+// Instantiate DDS object, using the AD9954 library.
+// Exact instantiation depends on how DDS is connected.
+// This could just as easily be any other device the 
+// Arduino knows how to communicate with, or even the
+// digital/analog outputs of the Arduino itself! 
+// SetListArduino is completely device-agnostic, which 
+// allows for easy extensibility.
+
+#define D1IOUPDATE 2
+#define D1PS1 3
+#define D1PS0 4
+#define D1OSK 5
+#define D1SS 6
+#define D1RESET 7
+
+AD9954 DDS(D1SS, D1RESET, D1IOUPDATE, D1PS0, D1PS1, D1OSK);    
+
+
+
+// Callback function to set a particular DDS frequency
+// We know that LabView will pass a single parameter for the frequency, thus
+// we want to pull freq = params[0].
+void setDDSFreq(AD9954 * dds, int * params){
+    dds->setFreq(params[0]);
+}
+
+
+// Callback function to initiate a DDS ramp.
+// Say we set this up so LabView will pass the parameters 
+// [freq0, freq1, tau] where tau is the ramp time.
+// Here, we do a few calculations, initialize the pins, and call linearSweep
+// on the DDS. The Arduino is controlling PS0 to do the sweep; see AD9954
+// for details.
+void rampDDS(AD9954 * dds, int * params){
+    int f0 = params[0];
+    int f1 = params[1];
+    int tau = params[2];
     
-    #define D1IOUPDATE 2
-    #define D1PS1 3
-    #define D1PS0 4
-    #define D1OSK 5
-    #define D1SS 6
-    #define D1RESET 7
+    double rampRate;
     
-	AD9954 DDS(D1SS, D1RESET, D1IOUPDATE, D1PS0, D1PS1, D1OSK);    
-
-
-
-    // Callback function to set a particular DDS frequency
-    // We know that LabView will pass a single parameter for the frequency, thus
-    // we want to pull freq = params[0].
-    void setDDSFreq(AD9954 * dds, int * params){
-        dds->setFreq(params[0]);
-    }
-
-
-    // Callback function to initiate a DDS ramp.
-    // Say we set this up so LabView will pass the parameters 
-    // [freq0, freq1, tau] where tau is the ramp time.
-    // Here, we do a few calculations, initialize the pins, and call linearSweep
-    // on the DDS. The Arduino is controlling PS0 to do the sweep; see AD9954
-    // for details.
-    void rampDDS(AD9954 * dds, int * params){
-        int f0 = params[0];
-        int f1 = params[1];
-        int tau = params[2];
-        
-        double rampRate;
-        
-        int delta = f1 - f0;    // calculate delta frequency
-        int RR = 1;             // number of SYS_CLK cycles to spend at each
-                                // intermediate frequency
-        rampRate = ((double) delta)/tau;   // Hz per second
-        int posDF = (int)(rampRate * RR * 100E-9);   // calculate posDF for DDS
-        
-        // this is implemented in the AD9954 library; see that
-        // documentation for details.
-        
-        dds->linearSweep(f0, f1, posDF, RR, posDF, RR);
-        digitalWrite(D1PS1, HIGH);  // DDS starts sweeping...
+    int delta = f1 - f0;    // calculate delta frequency
+    int RR = 1;             // number of SYS_CLK cycles to spend at each
+                            // intermediate frequency
+    rampRate = ((double) delta)/tau;   // Hz per second
+    int posDF = (int)(rampRate * RR * 100E-9);   // calculate posDF for DDS
     
-    }
+    // this is implemented in the AD9954 library; see that
+    // documentation for details.
+    
+    dds->linearSweep(f0, f1, posDF, RR, posDF, RR);
+    digitalWrite(D1PS1, HIGH);  // DDS starts sweeping...
+
+}
 
 
-	void setup(){
-		
-		Serial.begin(9600);
-		
-		SPI.begin();
-		SPI.setClockDivider(4);
-		SPI.setDataMode(SPI_MODE0);
-		
-		DDS.initialize(400000000);  // Start DDS with 400MHz clock
-		
-		/*****************************************
-		    SetListArduino Part!
-		******************************************/
-		
-		// Register the DDS device with SetListImage.
-		// First argument is device (passed by reference);
-		// Second argument is the "channel number", which must match
-		// what you entered in LabView. See README for more details.
-		SetListImage.registerDevice(DDS, 0);
-		
-		// Register as many callback functions as you need...
-		// This says the short-command "f" on channel 0 should execute
-		// the callback function setDDSFreq().
-		SetListImage.registerCommand("f", 0, setDDSFreq);
-		
-		// Here is another callback function, providing a method to 
-		// execute DDS ramps. Note, the short-command is different, but
-		// we still want this functionality for our DDS on channel 0.
-		// If we had a second DDS, say on channel 1, we would have to do a 
-		// second SetListImage.registerCommand("r", 1, rampDDS);
-		SetListImage.registerCommand("r", 0, rampDDS);
-		
-	
-	
-	}
+void setup(){
+    
+    Serial.begin(9600);
+    
+    SPI.begin();
+    SPI.setClockDivider(4);
+    SPI.setDataMode(SPI_MODE0);
+    
+    DDS.initialize(400000000);  // Start DDS with 400MHz clock
+    
+    /*****************************************
+        SetListArduino Part!
+    ******************************************/
+    
+    // Register the DDS device with SetListImage.
+    // First argument is device (passed by reference);
+    // Second argument is the "channel number", which must match
+    // what you entered in LabView. See README for more details.
+    SetListImage.registerDevice(DDS, 0);
+    
+    // Register as many callback functions as you need...
+    // This says the short-command "f" on channel 0 should execute
+    // the callback function setDDSFreq().
+    SetListImage.registerCommand("f", 0, setDDSFreq);
+    
+    // Here is another callback function, providing a method to 
+    // execute DDS ramps. Note, the short-command is different, but
+    // we still want this functionality for our DDS on channel 0.
+    // If we had a second DDS, say on channel 1, we would have to do a 
+    // second SetListImage.registerCommand("r", 1, rampDDS);
+    SetListImage.registerCommand("r", 0, rampDDS);
+    
 
-	void loop(){
-		SetListImage.readSerial();  // listen for & process serial commands 
-								    // from computer
-	}
 
+}
+
+void loop(){
+    SetListImage.readSerial();  // listen for & process serial commands 
+                                // from computer
+}
+```
 
 
 
