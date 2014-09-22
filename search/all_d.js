@@ -15,7 +15,6 @@ var searchData=
   ['setfreq',['setFreq',['../class_a_d9954.html#a6f1215b712be7981ccad3fcc550b321f',1,'AD9954::setFreq()'],['../class_a_d_f4350.html#a943e6ccb2191fac45f84b88d9570e728',1,'ADF4350::setFreq()']]],
   ['setftw',['setFTW',['../class_a_d9954.html#a646562f7ad4f023c19ac79d9bc5ba3aa',1,'AD9954']]],
   ['setint',['setInt',['../class_a_d_f4350.html#a9be39116c21701536c07676f05e27834',1,'ADF4350']]],
-  ['setlist_5fdebug',['SETLIST_DEBUG',['../_set_list_arduino_8h.html#a53c0597d283b7058c336280533412d85',1,'SetListArduino.h']]],
   ['setlist_5ferror_5fcheck',['SETLIST_ERROR_CHECK',['../_set_list_arduino_8h.html#a0244a32ef4e6b74906312b530e3ab964',1,'SetListArduino.h']]],
   ['setlistarduino',['SetListArduino',['../class_set_list_arduino.html',1,'SetListArduino'],['../class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43',1,'SetListArduino::SetListArduino()']]],
   ['setlistarduino_2ecpp',['SetListArduino.cpp',['../_set_list_arduino_8cpp.html',1,'']]],
