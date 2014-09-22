@@ -1,12 +1,11 @@
 var searchData=
 [
   ['readme_20file_20for_20the_20library',['Readme file for the library',['../md___users_npisenti_git_master_libraries__a_d536x__r_e_a_d_m_e.html',1,'']]],
-  ['readme',['README',['../md___users_npisenti_git_master_libraries__set_list_arduino__r_e_a_d_m_e.html',1,'']]],
   ['read',['read',['../class_my_e_e_p_r_o_m_class.html#a0ab9d1d9cd61b5d127c5a31b2d567a2a',1,'MyEEPROMClass']]],
   ['readme_2emd',['README.md',['../_set_list_arduino_2_r_e_a_d_m_e_8md.html',1,'']]],
-  ['readme_2emd',['README.md',['../_simple_l_c_d_2_r_e_a_d_m_e_8md.html',1,'']]],
-  ['readme_2emd',['README.md',['../_a_d_f4350_2_r_e_a_d_m_e_8md.html',1,'']]],
   ['readme_2emd',['README.md',['../_a_d536x_2_r_e_a_d_m_e_8md.html',1,'']]],
+  ['readme_2emd',['README.md',['../_a_d_f4350_2_r_e_a_d_m_e_8md.html',1,'']]],
+  ['readme_2emd',['README.md',['../_simple_l_c_d_2_r_e_a_d_m_e_8md.html',1,'']]],
   ['readme_2emd',['README.md',['../_a_d9954_2_r_e_a_d_m_e_8md.html',1,'']]],
   ['readme_2emd',['README.md',['../_lock_freq_2_r_e_a_d_m_e_8md.html',1,'']]],
   ['readme_2emd',['README.md',['../_a_d_f4107_2_r_e_a_d_m_e_8md.html',1,'']]],

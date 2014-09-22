@@ -1,6 +1,7 @@
 var searchData=
 [
   ['setlistarduino',['SetListArduino',['../index.html',1,'']]],
+  ['setlistarduino',['SetListArduino',['../md___users_npisenti_git_master_libraries__set_list_arduino__r_e_a_d_m_e.html',1,'']]],
   ['simplelcd',['SimpleLCD',['../md___users_npisenti_git_master_libraries__simple_l_c_d__r_e_a_d_m_e.html',1,'']]],
   ['scrollleft',['scrollLeft',['../class_simple_l_c_d.html#ae5acd9cf586878ddd79be17654422ac4',1,'SimpleLCD']]],
   ['scrollright',['scrollRight',['../class_simple_l_c_d.html#a17a9e30a27fbba7d1e88f84c333f23cd',1,'SimpleLCD']]],
