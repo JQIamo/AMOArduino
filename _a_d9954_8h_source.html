@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>My Project: /Users/npisenti/git_master/libraries/AD9954/AD9954.h Source File</title>
+<title>JQI Arduino Libraries: /Users/npisenti/git_master/libraries/AD9954/AD9954.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,9 +21,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="180px-JQI_logo_boxed.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">JQI Arduino Libraries
    </div>
+   <div id="projectbrief">Arduino for the modern scientist.</div>
   </td>
  </tr>
  </tbody>
@@ -153,19 +155,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="comment">// Instance variables that hold pinout mapping</span></div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">// from arduino to DDS pins.</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        byte _ssPin, _resetPin, _updatePin, _ps0, _ps1, _osk;</div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_a_d9954.html#a1230b4a5021664419b804f3684405a4a">   66</a></span>&#160;        byte <a class="code" href="class_a_d9954.html#aa5f4cc18f2cf7d5bb036a8df62f99e9a">_ssPin</a>, <a class="code" href="class_a_d9954.html#ac3aeb5f0494bac4119ad8a34b990b28e">_resetPin</a>, <a class="code" href="class_a_d9954.html#a1230b4a5021664419b804f3684405a4a">_updatePin</a>, <a class="code" href="class_a_d9954.html#aa8110e1098baf2018e5ba81f30a04be8">_ps0</a>, <a class="code" href="class_a_d9954.html#a4fe3e3bc2031a06f859f3ce3013b245f">_ps1</a>, <a class="code" href="class_a_d9954.html#afe0dd703b9e528b5b2f8cd25b53f8a9a">_osk</a>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="comment">// Instance variables for frequency _freq, frequency tuning word _ftw,</span></div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// reference clock frequency _refClk, etc.</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> _freq, _ftw, _refClk, _refIn;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="class_a_d9954.html#ae0d5eccc22bf64e94e79592a331fb002">   70</a></span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <a class="code" href="class_a_d9954.html#a3b980cd8b366816c4f2d9777506ffe39">_freq</a>, <a class="code" href="class_a_d9954.html#a7b0072d70f9e9a6172f68d906a38f8e5">_ftw</a>, <a class="code" href="class_a_d9954.html#a44f3eabcb250e7851d48935d148d8666">_refClk</a>, <a class="code" href="class_a_d9954.html#ae0d5eccc22bf64e94e79592a331fb002">_refIn</a>;</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">// function to write data to register. </span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">void</span> writeRegister(byte[2], byte[1024]);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordtype">void</span> <a class="code" href="class_a_d9954.html#ac2f244ad435ef892cec5e1493f0cf62d">writeRegister</a>(byte[2], byte[1024]);</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="comment">// DDS frequency resolution</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;         <span class="keywordtype">double</span> RESOLUTION;<span class="comment">// = 4294967296; // sets resolution to 2^32 = 32 bits. Using type double to avoid confusion with integer division...</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="class_a_d9954.html#a5ddb922c65635446744f2577516623e3">   78</a></span>&#160;         <span class="keywordtype">double</span> <a class="code" href="class_a_d9954.html#a5ddb922c65635446744f2577516623e3">RESOLUTION</a>;<span class="comment">// = 4294967296; // sets resolution to 2^32 = 32 bits. Using type double to avoid confusion with integer division...</span></div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
@@ -173,20 +175,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="class_a_d9954_html_a4fe3e3bc2031a06f859f3ce3013b245f"><div class="ttname"><a href="class_a_d9954.html#a4fe3e3bc2031a06f859f3ce3013b245f">AD9954::_ps1</a></div><div class="ttdeci">byte _ps1</div><div class="ttdef"><b>Definition:</b> AD9954.h:66</div></div>
+<div class="ttc" id="class_a_d9954_html_a7b0072d70f9e9a6172f68d906a38f8e5"><div class="ttname"><a href="class_a_d9954.html#a7b0072d70f9e9a6172f68d906a38f8e5">AD9954::_ftw</a></div><div class="ttdeci">unsigned long _ftw</div><div class="ttdef"><b>Definition:</b> AD9954.h:70</div></div>
 <div class="ttc" id="class_a_d9954_html_a886e71d0016338093db1bfeec593439a"><div class="ttname"><a href="class_a_d9954.html#a886e71d0016338093db1bfeec593439a">AD9954::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:113</div></div>
 <div class="ttc" id="class_a_d9954_html_a6f1215b712be7981ccad3fcc550b321f"><div class="ttname"><a href="class_a_d9954.html#a6f1215b712be7981ccad3fcc550b321f">AD9954::setFreq</a></div><div class="ttdeci">void setFreq(unsigned long)</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:128</div></div>
 <div class="ttc" id="class_a_d9954_html"><div class="ttname"><a href="class_a_d9954.html">AD9954</a></div><div class="ttdef"><b>Definition:</b> AD9954.h:27</div></div>
+<div class="ttc" id="class_a_d9954_html_afe0dd703b9e528b5b2f8cd25b53f8a9a"><div class="ttname"><a href="class_a_d9954.html#afe0dd703b9e528b5b2f8cd25b53f8a9a">AD9954::_osk</a></div><div class="ttdeci">byte _osk</div><div class="ttdef"><b>Definition:</b> AD9954.h:66</div></div>
+<div class="ttc" id="class_a_d9954_html_a5ddb922c65635446744f2577516623e3"><div class="ttname"><a href="class_a_d9954.html#a5ddb922c65635446744f2577516623e3">AD9954::RESOLUTION</a></div><div class="ttdeci">double RESOLUTION</div><div class="ttdef"><b>Definition:</b> AD9954.h:78</div></div>
 <div class="ttc" id="class_a_d9954_html_ab8522367a27fdfe3bcf070ff93e720a6"><div class="ttname"><a href="class_a_d9954.html#ab8522367a27fdfe3bcf070ff93e720a6">AD9954::initialize</a></div><div class="ttdeci">void initialize(unsigned long)</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:65</div></div>
+<div class="ttc" id="class_a_d9954_html_ac2f244ad435ef892cec5e1493f0cf62d"><div class="ttname"><a href="class_a_d9954.html#ac2f244ad435ef892cec5e1493f0cf62d">AD9954::writeRegister</a></div><div class="ttdeci">void writeRegister(byte[2], byte[1024])</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:242</div></div>
 <div class="ttc" id="class_a_d9954_html_af10555c6853afb3857c951f8ac160d49"><div class="ttname"><a href="class_a_d9954.html#af10555c6853afb3857c951f8ac160d49">AD9954::update</a></div><div class="ttdeci">void update()</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:121</div></div>
+<div class="ttc" id="class_a_d9954_html_aa8110e1098baf2018e5ba81f30a04be8"><div class="ttname"><a href="class_a_d9954.html#aa8110e1098baf2018e5ba81f30a04be8">AD9954::_ps0</a></div><div class="ttdeci">byte _ps0</div><div class="ttdef"><b>Definition:</b> AD9954.h:66</div></div>
 <div class="ttc" id="class_a_d9954_html_a646562f7ad4f023c19ac79d9bc5ba3aa"><div class="ttname"><a href="class_a_d9954.html#a646562f7ad4f023c19ac79d9bc5ba3aa">AD9954::setFTW</a></div><div class="ttdeci">void setFTW(unsigned long)</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:162</div></div>
+<div class="ttc" id="class_a_d9954_html_a44f3eabcb250e7851d48935d148d8666"><div class="ttname"><a href="class_a_d9954.html#a44f3eabcb250e7851d48935d148d8666">AD9954::_refClk</a></div><div class="ttdeci">unsigned long _refClk</div><div class="ttdef"><b>Definition:</b> AD9954.h:70</div></div>
+<div class="ttc" id="class_a_d9954_html_aa5f4cc18f2cf7d5bb036a8df62f99e9a"><div class="ttname"><a href="class_a_d9954.html#aa5f4cc18f2cf7d5bb036a8df62f99e9a">AD9954::_ssPin</a></div><div class="ttdeci">byte _ssPin</div><div class="ttdef"><b>Definition:</b> AD9954.h:66</div></div>
+<div class="ttc" id="class_a_d9954_html_a3b980cd8b366816c4f2d9777506ffe39"><div class="ttname"><a href="class_a_d9954.html#a3b980cd8b366816c4f2d9777506ffe39">AD9954::_freq</a></div><div class="ttdeci">unsigned long _freq</div><div class="ttdef"><b>Definition:</b> AD9954.h:70</div></div>
 <div class="ttc" id="class_a_d9954_html_a041e6d2db6d30326460cf8abdbf22121"><div class="ttname"><a href="class_a_d9954.html#a041e6d2db6d30326460cf8abdbf22121">AD9954::getFTW</a></div><div class="ttdeci">unsigned long getFTW()</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:156</div></div>
+<div class="ttc" id="class_a_d9954_html_a1230b4a5021664419b804f3684405a4a"><div class="ttname"><a href="class_a_d9954.html#a1230b4a5021664419b804f3684405a4a">AD9954::_updatePin</a></div><div class="ttdeci">byte _updatePin</div><div class="ttdef"><b>Definition:</b> AD9954.h:66</div></div>
+<div class="ttc" id="class_a_d9954_html_ae0d5eccc22bf64e94e79592a331fb002"><div class="ttname"><a href="class_a_d9954.html#ae0d5eccc22bf64e94e79592a331fb002">AD9954::_refIn</a></div><div class="ttdeci">unsigned long _refIn</div><div class="ttdef"><b>Definition:</b> AD9954.h:70</div></div>
 <div class="ttc" id="class_a_d9954_html_a26d0f9e3f3053ffecdb58d1900a755de"><div class="ttname"><a href="class_a_d9954.html#a26d0f9e3f3053ffecdb58d1900a755de">AD9954::linearSweep</a></div><div class="ttdeci">void linearSweep(unsigned long, unsigned long, unsigned long, byte, unsigned long, byte)</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:197</div></div>
 <div class="ttc" id="class_a_d9954_html_a2dc8bfd5a8996b50614be5dc06fa0fe8"><div class="ttname"><a href="class_a_d9954.html#a2dc8bfd5a8996b50614be5dc06fa0fe8">AD9954::AD9954</a></div><div class="ttdeci">AD9954(byte, byte, byte, byte, byte, byte)</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:30</div></div>
 <div class="ttc" id="class_a_d9954_html_a0c31b631ef8bb897b56d80f17d9191e7"><div class="ttname"><a href="class_a_d9954.html#a0c31b631ef8bb897b56d80f17d9191e7">AD9954::getFreq</a></div><div class="ttdeci">unsigned long getFreq()</div><div class="ttdef"><b>Definition:</b> AD9954.cpp:151</div></div>
+<div class="ttc" id="class_a_d9954_html_ac3aeb5f0494bac4119ad8a34b990b28e"><div class="ttname"><a href="class_a_d9954.html#ac3aeb5f0494bac4119ad8a34b990b28e">AD9954::_resetPin</a></div><div class="ttdeci">byte _resetPin</div><div class="ttdef"><b>Definition:</b> AD9954.h:66</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 22 2014 10:10:22 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 22 2014 10:44:13 for JQI Arduino Libraries by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

@@ -1,4 +1,9 @@
 var searchData=
 [
-  ['write',['write',['../class_a_d536x.html#a4306559b3a277926c6b55dc547c3071e',1,'AD536x::write()'],['../class_my_e_e_p_r_o_m_class.html#a391d8cbe47d292e6bf43a99069342d54',1,'MyEEPROMClass::write()'],['../class_simple_l_c_d.html#a4c9f910f1c428db08c6ef3e9f5e89979',1,'SimpleLCD::write(char *)'],['../class_simple_l_c_d.html#ae77c30f83d894be89fc9f47590719b89',1,'SimpleLCD::write(int)'],['../class_simple_l_c_d.html#a0b7acc06620ef9c17b7208969aba6209',1,'SimpleLCD::write(double)'],['../class_simple_l_c_d.html#a381c3a3c652eeb4566787b146c84709c',1,'SimpleLCD::write(int, double)'],['../class_simple_l_c_d.html#afb7e52b2ba57edac33d1b62d169d4412',1,'SimpleLCD::write(int, int)'],['../class_simple_l_c_d.html#a4d554945dd31fb6b794929751dcffa3b',1,'SimpleLCD::write(int, char *)']]]
+  ['underlinecursoroff',['underlineCursorOff',['../class_simple_l_c_d.html#afd1189fc17e80cb1ba762ea496c6cdfc',1,'SimpleLCD']]],
+  ['underlinecursoron',['underlineCursorOn',['../class_simple_l_c_d.html#af154cdfb80b12870b073d20f8c44cf9c',1,'SimpleLCD']]],
+  ['update',['update',['../class_a_d9954.html#af10555c6853afb3857c951f8ac160d49',1,'AD9954::update()'],['../class_a_d_f4107.html#a4dd855fca25d292710d8db4960cf9150',1,'ADF4107::update()'],['../class_a_d_f4350.html#ac8380633f14b6704ea75b95631ed710e',1,'ADF4350::update()']]],
+  ['updatebasefreq',['updateBaseFreq',['../class_lock_freq.html#a9eab5f4bf8e40ac645314ca3b93a61cc',1,'LockFreq']]],
+  ['updatecenterfreq',['updateCenterFreq',['../class_lock_freq.html#a0f89bda80d226206d11d1fc13721df2c',1,'LockFreq']]],
+  ['updatefreq',['updateFreq',['../class_lock_freq.html#aa0fb05435cf4c3d9a93bafe41fee3a96',1,'LockFreq']]]
 ];

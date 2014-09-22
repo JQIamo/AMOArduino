@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>My Project: ADF4107 Class Reference</title>
+<title>JQI Arduino Libraries: ADF4107 Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,9 +21,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="180px-JQI_logo_boxed.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">JQI Arduino Libraries
    </div>
+   <div id="projectbrief">Arduino for the modern scientist.</div>
   </td>
  </tr>
  </tbody>
@@ -84,6 +86,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_a_d_f4107-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ADF4107 Class Reference</div>  </div>
@@ -100,6 +104,24 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac1417c196c6e3a2e6fa012a4e55931b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4dd855fca25d292710d8db4960cf9150"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#a4dd855fca25d292710d8db4960cf9150">update</a> (int, int, int, int)</td></tr>
 <tr class="separator:a4dd855fca25d292710d8db4960cf9150"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aa64519496bf44c97b39a08f525819d99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#aa64519496bf44c97b39a08f525819d99">writeRegisterData</a> (unsigned long)</td></tr>
+<tr class="separator:aa64519496bf44c97b39a08f525819d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a143bc1ac9d19ebec954ec7ece7cffc99"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#a143bc1ac9d19ebec954ec7ece7cffc99">_ssPin</a></td></tr>
+<tr class="separator:a143bc1ac9d19ebec954ec7ece7cffc99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fd710ccf839c3290a57cd50b9f4f278"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#a4fd710ccf839c3290a57cd50b9f4f278">_p</a></td></tr>
+<tr class="separator:a4fd710ccf839c3290a57cd50b9f4f278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0dc1a2161be02130df5644e2cda4209"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#aa0dc1a2161be02130df5644e2cda4209">_b</a></td></tr>
+<tr class="separator:aa0dc1a2161be02130df5644e2cda4209"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57ccb5d81fe1841da7ce77fc4a7d8820"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#a57ccb5d81fe1841da7ce77fc4a7d8820">_a</a></td></tr>
+<tr class="separator:a57ccb5d81fe1841da7ce77fc4a7d8820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcc39c342c14b2bd2c5451f92c07d3c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_d_f4107.html#afcc39c342c14b2bd2c5451f92c07d3c0">_r</a></td></tr>
+<tr class="separator:afcc39c342c14b2bd2c5451f92c07d3c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a5307cb86b87fe265003885d5a4bb39ad"></a>
@@ -195,6 +217,131 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aa64519496bf44c97b39a08f525819d99"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ADF4107::writeRegisterData </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a57ccb5d81fe1841da7ce77fc4a7d8820"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ADF4107::_a</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa0dc1a2161be02130df5644e2cda4209"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ADF4107::_b</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4fd710ccf839c3290a57cd50b9f4f278"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ADF4107::_p</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="afcc39c342c14b2bd2c5451f92c07d3c0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ADF4107::_r</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a143bc1ac9d19ebec954ec7ece7cffc99"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte ADF4107::_ssPin</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/Users/npisenti/git_master/libraries/ADF4107/<a class="el" href="_a_d_f4107_8h_source.html">ADF4107.h</a></li>
 <li>/Users/npisenti/git_master/libraries/ADF4107/<a class="el" href="_a_d_f4107_8cpp.html">ADF4107.cpp</a></li>
@@ -202,7 +349,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 22 2014 10:10:23 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 22 2014 10:44:14 for JQI Arduino Libraries by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

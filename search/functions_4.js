@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['executesetlist',['executeSetList',['../class_set_list_base.html#ac499005d72ae6ed653c3c47658748f63',1,'SetListBase::executeSetList()'],['../class_set_list_device.html#a1bfb9224665d3f249d504b923fe109d3',1,'SetListDevice::executeSetList()']]]
+  ['displayoff',['displayOff',['../class_simple_l_c_d.html#ab915e713d067b9d7d00146a95a0deb00',1,'SimpleLCD']]],
+  ['displayon',['displayOn',['../class_simple_l_c_d.html#a3077df5086f8e4d08140ca643dfe7588',1,'SimpleLCD']]],
+  ['dosomething',['doSomething',['../class_a_d536x.html#a3f9652029adcb4e853aff4dac64b4331',1,'AD536x']]]
 ];

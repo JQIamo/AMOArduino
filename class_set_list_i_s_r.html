@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>My Project: SetListISR Class Reference</title>
+<title>JQI Arduino Libraries: SetListISR Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,9 +21,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="180px-JQI_logo_boxed.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">JQI Arduino Libraries
    </div>
+   <div id="projectbrief">Arduino for the modern scientist.</div>
   </td>
  </tr>
  </tbody>
@@ -133,10 +135,10 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ISR for "first trigger" of a SetList. </p>
-<p>This ISR is attached to SetListArduino::_triggerChannel on a falling edge trigger. Once <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> sees that first falling edge, it changes the ISR to trigger on <code>CHANGE</code> (ie, rising <em>or</em> falling edge).</p>
+<p>This ISR is attached to <a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a> on a falling edge trigger. Once <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> sees that first falling edge, it changes the ISR to trigger on <code>CHANGE</code> (ie, rising <em>or</em> falling edge).</p>
 <p>It is implemented this way because depending on whether SetList has an even or odd number of lines, the PulseBlaster trigger channel might be in a high or a low state, thus causing an off-by-one index error in the SetList table.</p>
 <p>Note this also means that the first SetList line should be a "static" output for all Arduino-controlled devices, ie, not a DDS ramp or similar. See the <a href="md__r_e_a_d_m_e.html">README</a> for more details.</p>
-<dl class="section see"><dt>See also</dt><dd>SetListArduino::_triggerChannel, <a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino::SetListArduino()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a>, <a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino::SetListArduino()</a> </dd></dl>
 
 </div>
 </div>
@@ -162,8 +164,8 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ISR for all other SetList triggers after the first trigger. </p>
-<p>This ISR is attached to SetListArduino::_triggerChannel on a <code>CHANGE</code> event. See <a class="el" href="class_set_list_i_s_r.html#a5a414ba3359d036d4e340d4e35fa1e1b" title="ISR for &quot;first trigger&quot; of a SetList. ">firstTriggerInterrupt()</a> for more details, as well as the <a href="md__r_e_a_d_m_e.html">README</a>.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_i_s_r.html#a5a414ba3359d036d4e340d4e35fa1e1b" title="ISR for &quot;first trigger&quot; of a SetList. ">firstTriggerInterrupt()</a>, SetListArduino::_triggerChannel, <a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino::SetListArduino()</a> </dd></dl>
+<p>This ISR is attached to <a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a> on a <code>CHANGE</code> event. See <a class="el" href="class_set_list_i_s_r.html#a5a414ba3359d036d4e340d4e35fa1e1b" title="ISR for &quot;first trigger&quot; of a SetList. ">firstTriggerInterrupt()</a> for more details, as well as the <a href="md__r_e_a_d_m_e.html">README</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_i_s_r.html#a5a414ba3359d036d4e340d4e35fa1e1b" title="ISR for &quot;first trigger&quot; of a SetList. ">firstTriggerInterrupt()</a>, <a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a>, <a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino::SetListArduino()</a> </dd></dl>
 
 </div>
 </div>
@@ -174,7 +176,7 @@ Static Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 22 2014 10:10:23 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 22 2014 10:44:14 for JQI Arduino Libraries by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

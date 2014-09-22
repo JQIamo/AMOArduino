@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['myeeprom',['MyEEPROM',['../_my_e_e_p_r_o_m_8cpp.html#a7b629ab5344b3cafc1fd6feeab2af40d',1,'MyEEPROM():&#160;MyEEPROM.cpp'],['../_my_e_e_p_r_o_m_8h.html#a7b629ab5344b3cafc1fd6feeab2af40d',1,'MyEEPROM():&#160;MyEEPROM.cpp']]]
+  ['channel',['channel',['../struct_set_list_arduino_1_1_serial_command_callback.html#aca2ca7bacd9ded97e53a7c24f05feb2f',1,'SetListArduino::SerialCommandCallback']]],
+  ['command',['command',['../struct_set_list_arduino_1_1_serial_command_callback.html#a856ba80e490f1b0791b80bd33fd4dc12',1,'SetListArduino::SerialCommandCallback']]]
 ];

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.8"/>
-<title>My Project: SetListArduino Class Reference</title>
+<title>JQI Arduino Libraries: SetListArduino Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -21,9 +21,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="180px-JQI_logo_boxed.png"/></td>
   <td style="padding-left: 0.5em;">
-   <div id="projectname">My Project
+   <div id="projectname">JQI Arduino Libraries
    </div>
+   <div id="projectbrief">Arduino for the modern scientist.</div>
   </td>
  </tr>
  </tbody>
@@ -85,6 +87,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_set_list_arduino-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">SetListArduino Class Reference</div>  </div>
@@ -96,6 +100,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p><code>#include &lt;<a class="el" href="_set_list_arduino_8h_source.html">SetListArduino.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_set_list_arduino_1_1_serial_command_callback.html">SerialCommandCallback</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data <code>struct</code> containing a map between serial commands and SetList callback functions.  <a href="struct_set_list_arduino_1_1_serial_command_callback.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a323374a1a897aca1bc30bd936c7bdf43"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43">SetListArduino</a> (int triggerChannel)</td></tr>
@@ -110,10 +120,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a632bd0e945344749143fbe7dbb138a01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a callback command with <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a>, associated with a particular device channel.  <a href="#a632bd0e945344749143fbe7dbb138a01">More...</a><br /></td></tr>
 <tr class="separator:a632bd0e945344749143fbe7dbb138a01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a676039e69df122f499a7d6c16e9750b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a676039e69df122f499a7d6c16e9750b4">clearSetList</a> ()</td></tr>
-<tr class="memdesc:a676039e69df122f499a7d6c16e9750b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the currently programmed setlist by resetting SetListArduino::_setlistLength counter.  <a href="#a676039e69df122f499a7d6c16e9750b4">More...</a><br /></td></tr>
+<tr class="memdesc:a676039e69df122f499a7d6c16e9750b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the currently programmed setlist by resetting <a class="el" href="class_set_list_arduino.html#aa8ef862aca4fde69c8df3d9517dc5f91" title="Member data containing the length of the programmed SetList. ">SetListArduino::_setlistLength</a> counter.  <a href="#a676039e69df122f499a7d6c16e9750b4">More...</a><br /></td></tr>
 <tr class="separator:a676039e69df122f499a7d6c16e9750b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a585436af3953da7a96d3a68a3b74713a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a585436af3953da7a96d3a68a3b74713a">getTriggerChannel</a> ()</td></tr>
-<tr class="memdesc:a585436af3953da7a96d3a68a3b74713a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns SetListArduino::_triggerChannel.  <a href="#a585436af3953da7a96d3a68a3b74713a">More...</a><br /></td></tr>
+<tr class="memdesc:a585436af3953da7a96d3a68a3b74713a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a>.  <a href="#a585436af3953da7a96d3a68a3b74713a">More...</a><br /></td></tr>
 <tr class="separator:a585436af3953da7a96d3a68a3b74713a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a931336ef86606ee797ae36306e56df1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a931336ef86606ee797ae36306e56df1f">triggerUpdate</a> ()</td></tr>
 <tr class="memdesc:a931336ef86606ee797ae36306e56df1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forces update on all devices to next SetList line.  <a href="#a931336ef86606ee797ae36306e56df1f">More...</a><br /></td></tr>
@@ -124,6 +134,66 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1279452c02986bfb3ead06589111a321"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a1279452c02986bfb3ead06589111a321">clearSerialBuffer</a> ()</td></tr>
 <tr class="memdesc:a1279452c02986bfb3ead06589111a321"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the serial buffer after encountering a line termination character.  <a href="#a1279452c02986bfb3ead06589111a321">More...</a><br /></td></tr>
 <tr class="separator:a1279452c02986bfb3ead06589111a321"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a0b433e71990e19fddcd08c0964d3e351"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a0b433e71990e19fddcd08c0964d3e351">_line</a></td></tr>
+<tr class="memdesc:a0b433e71990e19fddcd08c0964d3e351"><td class="mdescLeft">&#160;</td><td class="mdescRight">State variable tracking active SetList line.  <a href="#a0b433e71990e19fddcd08c0964d3e351">More...</a><br /></td></tr>
+<tr class="separator:a0b433e71990e19fddcd08c0964d3e351"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8ef862aca4fde69c8df3d9517dc5f91"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#aa8ef862aca4fde69c8df3d9517dc5f91">_setlistLength</a></td></tr>
+<tr class="memdesc:aa8ef862aca4fde69c8df3d9517dc5f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Member data containing the length of the programmed SetList.  <a href="#aa8ef862aca4fde69c8df3d9517dc5f91">More...</a><br /></td></tr>
+<tr class="separator:aa8ef862aca4fde69c8df3d9517dc5f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c5691955e2ad05317f466b10354b101"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101">_triggerChannel</a></td></tr>
+<tr class="memdesc:a3c5691955e2ad05317f466b10354b101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binding for <code>attachInterrupt()</code> ISR routine.  <a href="#a3c5691955e2ad05317f466b10354b101">More...</a><br /></td></tr>
+<tr class="separator:a3c5691955e2ad05317f466b10354b101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b154c539b03b9947dc16c1df0f16ba4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_set_list_arduino_1_1_serial_command_callback.html">SerialCommandCallback</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a6b154c539b03b9947dc16c1df0f16ba4">_commandList</a></td></tr>
+<tr class="memdesc:a6b154c539b03b9947dc16c1df0f16ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dynamically allocated list of registered commands.  <a href="#a6b154c539b03b9947dc16c1df0f16ba4">More...</a><br /></td></tr>
+<tr class="separator:a6b154c539b03b9947dc16c1df0f16ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4174a6ba140ceebfc55b3606f12cbfe9"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a4174a6ba140ceebfc55b3606f12cbfe9">_serialTerm</a></td></tr>
+<tr class="memdesc:a4174a6ba140ceebfc55b3606f12cbfe9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial stream line terminator.  <a href="#a4174a6ba140ceebfc55b3606f12cbfe9">More...</a><br /></td></tr>
+<tr class="separator:a4174a6ba140ceebfc55b3606f12cbfe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8047e7a4310b23217137d0a41fe920ae"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a8047e7a4310b23217137d0a41fe920ae">_buffer</a> [<a class="el" href="_set_list_arduino_8h.html#ab60e8e08a24b4623ef3f163817bad9b1">SERIALCOMMAND_BUFFER</a>+1]</td></tr>
+<tr class="memdesc:a8047e7a4310b23217137d0a41fe920ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Serial command buffer.  <a href="#a8047e7a4310b23217137d0a41fe920ae">More...</a><br /></td></tr>
+<tr class="separator:a8047e7a4310b23217137d0a41fe920ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0776d6d701626ae0da17250a3424f8dd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a0776d6d701626ae0da17250a3424f8dd">_bufPos</a></td></tr>
+<tr class="memdesc:a0776d6d701626ae0da17250a3424f8dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position in the serial buffer.  <a href="#a0776d6d701626ae0da17250a3424f8dd">More...</a><br /></td></tr>
+<tr class="separator:a0776d6d701626ae0da17250a3424f8dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29af2dbc4cbd68d4625461d65c8545fe"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a29af2dbc4cbd68d4625461d65c8545fe">_delim</a> [2]</td></tr>
+<tr class="memdesc:a29af2dbc4cbd68d4625461d65c8545fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Text delimiter to use for strtok_r in <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a>.  <a href="#a29af2dbc4cbd68d4625461d65c8545fe">More...</a><br /></td></tr>
+<tr class="separator:a29af2dbc4cbd68d4625461d65c8545fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21de06c866892ecf46812cdfd1b3c589"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a21de06c866892ecf46812cdfd1b3c589">_last</a></td></tr>
+<tr class="memdesc:a21de06c866892ecf46812cdfd1b3c589"><td class="mdescLeft">&#160;</td><td class="mdescRight">State variable used by strtok_r in <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a>.  <a href="#a21de06c866892ecf46812cdfd1b3c589">More...</a><br /></td></tr>
+<tr class="separator:a21de06c866892ecf46812cdfd1b3c589"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33401b8f5bd490e2290a2d7ae7fae4bd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a33401b8f5bd490e2290a2d7ae7fae4bd">_commandCount</a></td></tr>
+<tr class="memdesc:a33401b8f5bd490e2290a2d7ae7fae4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds total number of registered commands.  <a href="#a33401b8f5bd490e2290a2d7ae7fae4bd">More...</a><br /></td></tr>
+<tr class="separator:a33401b8f5bd490e2290a2d7ae7fae4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a892b579e7a23da570bebab6311430133"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a892b579e7a23da570bebab6311430133">_activeDevice</a></td></tr>
+<tr class="memdesc:a892b579e7a23da570bebab6311430133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variable tracking the channel of "active" device.  <a href="#a892b579e7a23da570bebab6311430133">More...</a><br /></td></tr>
+<tr class="separator:a892b579e7a23da570bebab6311430133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a76b630ac9b7a5185be5b931a77f835"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a7a76b630ac9b7a5185be5b931a77f835">_deviceCount</a></td></tr>
+<tr class="memdesc:a7a76b630ac9b7a5185be5b931a77f835"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tracks number of registered devices.  <a href="#a7a76b630ac9b7a5185be5b931a77f835">More...</a><br /></td></tr>
+<tr class="separator:a7a76b630ac9b7a5185be5b931a77f835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac85292de5d23f7360d5d10ee0d0b1777"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_set_list_base.html">SetListBase</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#ac85292de5d23f7360d5d10ee0d0b1777">_deviceList</a> [<a class="el" href="_set_list_arduino_8h.html#a617ea04eca8bf55cc900cf307fd3581d">MAX_DEVICE_NUMBER</a>]</td></tr>
+<tr class="memdesc:ac85292de5d23f7360d5d10ee0d0b1777"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of pointers to the registered devices.  <a href="#ac85292de5d23f7360d5d10ee0d0b1777">More...</a><br /></td></tr>
+<tr class="separator:ac85292de5d23f7360d5d10ee0d0b1777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a90dea214d71ee7df9b1499995e1d2a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a0a90dea214d71ee7df9b1499995e1d2a">_errorFlag</a></td></tr>
+<tr class="memdesc:a0a90dea214d71ee7df9b1499995e1d2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Boolean flag indicating whether an error has occurred.  <a href="#a0a90dea214d71ee7df9b1499995e1d2a">More...</a><br /></td></tr>
+<tr class="separator:a0a90dea214d71ee7df9b1499995e1d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:ad6af947d64077959d8660f1809fb825f"><td class="memItemLeft" align="right" valign="top">static const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#ad6af947d64077959d8660f1809fb825f">_activateDeviceCmd</a> = '@'</td></tr>
+<tr class="memdesc:ad6af947d64077959d8660f1809fb825f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special short command to activate a particular device.  <a href="#ad6af947d64077959d8660f1809fb825f">More...</a><br /></td></tr>
+<tr class="separator:ad6af947d64077959d8660f1809fb825f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b6149dbafb54fc49644d9617f3f4fae"><td class="memItemLeft" align="right" valign="top">static const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a1b6149dbafb54fc49644d9617f3f4fae">_initRunCmd</a> = '$'</td></tr>
+<tr class="memdesc:a1b6149dbafb54fc49644d9617f3f4fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special short command to initialize a run.  <a href="#a1b6149dbafb54fc49644d9617f3f4fae">More...</a><br /></td></tr>
+<tr class="separator:a1b6149dbafb54fc49644d9617f3f4fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0d00306ced8bf08dfe8a68fe2cc352f"><td class="memItemLeft" align="right" valign="top">static const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#ab0d00306ced8bf08dfe8a68fe2cc352f">_echoSetListCmd</a> = '?'</td></tr>
+<tr class="memdesc:ab0d00306ced8bf08dfe8a68fe2cc352f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special short command to echo each device's SetList back to the serial terminal.  <a href="#ab0d00306ced8bf08dfe8a68fe2cc352f">More...</a><br /></td></tr>
+<tr class="separator:ab0d00306ced8bf08dfe8a68fe2cc352f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14843a978698dd9aada4dfaa21fe45ca"><td class="memItemLeft" align="right" valign="top">static const char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_set_list_arduino.html#a14843a978698dd9aada4dfaa21fe45ca">_executeSingleLine</a> = '#'</td></tr>
+<tr class="memdesc:a14843a978698dd9aada4dfaa21fe45ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special short command to execute a single setlist line on a particular channel.  <a href="#a14843a978698dd9aada4dfaa21fe45ca">More...</a><br /></td></tr>
+<tr class="separator:a14843a978698dd9aada4dfaa21fe45ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Primary "front-facing" class for the <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> library. </p>
@@ -188,7 +258,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Clears the currently programmed setlist by resetting SetListArduino::_setlistLength counter. </p>
+<p>Clears the currently programmed setlist by resetting <a class="el" href="class_set_list_arduino.html#aa8ef862aca4fde69c8df3d9517dc5f91" title="Member data containing the length of the programmed SetList. ">SetListArduino::_setlistLength</a> counter. </p>
 
 </div>
 </div>
@@ -205,7 +275,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns SetListArduino::_triggerChannel. </p>
+<p>Returns <a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a>. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino()</a> </dd></dl>
 
 </div>
@@ -321,8 +391,8 @@ template&lt;typename Device &gt; </div>
 <p>Be sure to read the <code>channel</code> details below!!** You'll be glad you did when you avoid a segfault.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">device</td><td>Device, passed in by reference, which will be added to SetListArduino::_deviceList and enabled for computer control.</td></tr>
-    <tr><td class="paramname">channel</td><td>Integer, <b>starting with zero</b>, corresponding to the index at which the device will be placed in the array SetListArduino::_deviceList. It is important that you define channels sequentially, beginning with 0, because <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> will loop through <code>_deviceList[0] ... _deviceList[n]</code> where <code>n</code> is the number of registered devices. If it tries to execute SetList commands on a device that has not been registered, you risk a segfault. Ultimately this should be protected against, but for now just take note! Number your channels from <code>0...n</code> and you'll be fine.</td></tr>
+    <tr><td class="paramname">device</td><td>Device, passed in by reference, which will be added to <a class="el" href="class_set_list_arduino.html#ac85292de5d23f7360d5d10ee0d0b1777" title="List of pointers to the registered devices. ">SetListArduino::_deviceList</a> and enabled for computer control.</td></tr>
+    <tr><td class="paramname">channel</td><td>Integer, <b>starting with zero</b>, corresponding to the index at which the device will be placed in the array <a class="el" href="class_set_list_arduino.html#ac85292de5d23f7360d5d10ee0d0b1777" title="List of pointers to the registered devices. ">SetListArduino::_deviceList</a>. It is important that you define channels sequentially, beginning with 0, because <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> will loop through <code>_deviceList[0] ... _deviceList[n]</code> where <code>n</code> is the number of registered devices. If it tries to execute SetList commands on a device that has not been registered, you risk a segfault. Ultimately this should be protected against, but for now just take note! Number your channels from <code>0...n</code> and you'll be fine.</td></tr>
   </table>
   </dd>
 </dl>
@@ -346,9 +416,431 @@ template&lt;typename Device &gt; </div>
 
 <p>Forces update on all devices to next SetList line. </p>
 <p>This function loops through the registered devices, and calls <a class="el" href="class_set_list_device.html#a1bfb9224665d3f249d504b923fe109d3" title="Executes callback function at a particular SetList line. ">SetListDevice::executeSetList()</a> on the active line.</p>
-<p>The active setlist line is kept track of by SetListArduino::_line.</p>
+<p>The active setlist line is kept track of by <a class="el" href="class_set_list_arduino.html#a0b433e71990e19fddcd08c0964d3e351" title="State variable tracking active SetList line. ">SetListArduino::_line</a>.</p>
 <p>Make sure you have read the warning in <a class="el" href="class_set_list_arduino.html#a684eb215a00c94d6c2113ef7a61be096" title="Registers an Arduino-controlled device with SetListArduino, indicating it should expect to receive Se...">SetListArduino::registerDevice()</a>, because there is a risk of segfault if <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> tries to execute callbacks for non-existant devices.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a684eb215a00c94d6c2113ef7a61be096" title="Registers an Arduino-controlled device with SetListArduino, indicating it should expect to receive Se...">registerDevice()</a>, <a class="el" href="class_set_list_device.html#a1bfb9224665d3f249d504b923fe109d3" title="Executes callback function at a particular SetList line. ">SetListDevice::executeSetList()</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ad6af947d64077959d8660f1809fb825f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char SetListArduino::_activateDeviceCmd = '@'</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Special short command to activate a particular device. </p>
+<p>Sending "@ 0" to the serial terminal will activate the device on channel 0. This short command expects a single parameter; any additional parameters will be ignored.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a892b579e7a23da570bebab6311430133" title="Variable tracking the channel of &quot;active&quot; device. ">SetListArduino::_activeDevice</a>, <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a892b579e7a23da570bebab6311430133"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SetListArduino::_activeDevice</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Variable tracking the channel of "active" device. </p>
+<p>Here, "active" means SetList commands written to the serial terminal will be added to that device's SetList. Devices are activated with the special short command given in <a class="el" href="class_set_list_arduino.html#ad6af947d64077959d8660f1809fb825f" title="Special short command to activate a particular device. ">SetListArduino::_activateDeviceCmd</a>. </p>
+
+</div>
+</div>
+<a class="anchor" id="a8047e7a4310b23217137d0a41fe920ae"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char SetListArduino::_buffer[<a class="el" href="_set_list_arduino_8h.html#ab60e8e08a24b4623ef3f163817bad9b1">SERIALCOMMAND_BUFFER</a>+1]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serial command buffer. </p>
+<p><a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a> stores characters here while looking for serial termination character. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0776d6d701626ae0da17250a3424f8dd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SetListArduino::_bufPos</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Current position in the serial buffer. </p>
+
+</div>
+</div>
+<a class="anchor" id="a33401b8f5bd490e2290a2d7ae7fae4bd"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SetListArduino::_commandCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Holds total number of registered commands. </p>
+
+</div>
+</div>
+<a class="anchor" id="a6b154c539b03b9947dc16c1df0f16ba4"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_set_list_arduino_1_1_serial_command_callback.html">SerialCommandCallback</a>* SetListArduino::_commandList</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dynamically allocated list of registered commands. </p>
+<p>List of <a class="el" href="struct_set_list_arduino_1_1_serial_command_callback.html" title="Data struct containing a map between serial commands and SetList callback functions. ">SetListArduino::SerialCommandCallback</a> <code>structs</code>, which <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">SetListArduino::readSerial()</a> uses to lookup incoming serial commands when programming a new SetList.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a>, <a class="el" href="struct_set_list_arduino_1_1_serial_command_callback.html" title="Data struct containing a map between serial commands and SetList callback functions. ">SerialCommandCallback</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a29af2dbc4cbd68d4625461d65c8545fe"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char SetListArduino::_delim[2]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Text delimiter to use for strtok_r in <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a>. </p>
+
+</div>
+</div>
+<a class="anchor" id="a7a76b630ac9b7a5185be5b931a77f835"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SetListArduino::_deviceCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tracks number of registered devices. </p>
+<p>Variable keeping count of how many Arduino-controlled devices are registered with <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> for computer control.</p>
+<p>During the execution of a SetList, <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> will loop through each device in <a class="el" href="class_set_list_arduino.html#ac85292de5d23f7360d5d10ee0d0b1777" title="List of pointers to the registered devices. ">SetListArduino::_deviceList</a>, up to the index given by _deviceCount. See the warning in <a class="el" href="class_set_list_arduino.html#a684eb215a00c94d6c2113ef7a61be096" title="Registers an Arduino-controlled device with SetListArduino, indicating it should expect to receive Se...">registerDevice()</a> about avoiding segfaults.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#ac85292de5d23f7360d5d10ee0d0b1777" title="List of pointers to the registered devices. ">SetListArduino::_deviceList</a>, <a class="el" href="class_set_list_arduino.html#a684eb215a00c94d6c2113ef7a61be096" title="Registers an Arduino-controlled device with SetListArduino, indicating it should expect to receive Se...">registerDevice()</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac85292de5d23f7360d5d10ee0d0b1777"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_set_list_base.html">SetListBase</a>* SetListArduino::_deviceList[<a class="el" href="_set_list_arduino_8h.html#a617ea04eca8bf55cc900cf307fd3581d">MAX_DEVICE_NUMBER</a>]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>List of pointers to the registered devices. </p>
+<p>This is a list of pointers to devices you have registered using <a class="el" href="class_set_list_arduino.html#a684eb215a00c94d6c2113ef7a61be096" title="Registers an Arduino-controlled device with SetListArduino, indicating it should expect to receive Se...">registerDevice()</a>. Be sure to look at the warning in <a class="el" href="class_set_list_arduino.html#a684eb215a00c94d6c2113ef7a61be096" title="Registers an Arduino-controlled device with SetListArduino, indicating it should expect to receive Se...">registerDevice()</a> to avoid segfaults, because the channel you register with a given device is just the index in _deviceList.</p>
+<p>I concede this could be handled better, perhaps in a future release. </p>
+
+</div>
+</div>
+<a class="anchor" id="ab0d00306ced8bf08dfe8a68fe2cc352f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char SetListArduino::_echoSetListCmd = '?'</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Special short command to echo each device's SetList back to the serial terminal. </p>
+<p>Sending "?" to the serial terminal will cause the Arduino to write each device's setlist to the serial terminal, including information about how many SetList triggers that device expects.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0a90dea214d71ee7df9b1499995e1d2a"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SetListArduino::_errorFlag</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Boolean flag indicating whether an error has occurred. </p>
+<p>During <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a>, if <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> encounters an error such as an out-of-bound index, non-rectangular setlist, or invalid command, it will set <code>_errorFlag = true</code> and report back to LabView on the serial stream.</p>
+<p>This feature can be enabled/disabled by setting <a class="el" href="_set_list_arduino_8h.html#a0244a32ef4e6b74906312b530e3ab964" title="Boolean to enable/disable serial error checking. ">SETLIST_ERROR_CHECK</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="a14843a978698dd9aada4dfaa21fe45ca"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char SetListArduino::_executeSingleLine = '#'</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Special short command to execute a single setlist line on a particular channel. </p>
+<p>Sending "# (channel) (line)" will cause the Arduino to execute the SpecificSetListCallback function on the given line and channel.</p>
+<p>For example, "# 0 5" would execute the SetList command line 5 for device 0.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1b6149dbafb54fc49644d9617f3f4fae"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char SetListArduino::_initRunCmd = '$'</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Special short command to initialize a run. </p>
+<p>Sending "$" to the serial terminal will place the Arduino in a state where it is ready to receive triggers on <a class="el" href="class_set_list_arduino.html#a3c5691955e2ad05317f466b10354b101" title="Binding for attachInterrupt() ISR routine. ">SetListArduino::_triggerChannel</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a21de06c866892ecf46812cdfd1b3c589"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* SetListArduino::_last</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>State variable used by strtok_r in <a class="el" href="class_set_list_arduino.html#a13ae88af6c307c7a1784cce29b1b8de8" title="Listens to the serial stream for new commands from the computer. ">readSerial()</a>. </p>
+
+</div>
+</div>
+<a class="anchor" id="a0b433e71990e19fddcd08c0964d3e351"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile int SetListArduino::_line</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>State variable tracking active SetList line. </p>
+
+</div>
+</div>
+<a class="anchor" id="a4174a6ba140ceebfc55b3606f12cbfe9"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char SetListArduino::_serialTerm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Serial stream line terminator. </p>
+<p>Set to "\n" in <a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino()</a> </p>
+
+</div>
+</div>
+<a class="anchor" id="aa8ef862aca4fde69c8df3d9517dc5f91"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SetListArduino::_setlistLength</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Member data containing the length of the programmed SetList. </p>
+<p>Behavior of <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> relies on the SetLists programmed from LabView be of equal length. Specifically, <a class="el" href="class_set_list_arduino.html#aa8ef862aca4fde69c8df3d9517dc5f91" title="Member data containing the length of the programmed SetList. ">SetListArduino::_setlistLength</a> is reset each time LabView activates a new device from the serial terminal, and is incremented for each new SetList line passed for that device. There is rudimentary error checking done to ensure each <a class="el" href="class_set_list_device.html" title="Template class implementation of Setlist, for device-specific behavior. ">SetListDevice</a> has a setlist of the expected length. Setting <a class="el" href="_set_list_arduino_8h.html#a0244a32ef4e6b74906312b530e3ab964" title="Boolean to enable/disable serial error checking. ">SETLIST_ERROR_CHECK</a> will cause <a class="el" href="class_set_list_arduino.html" title="Primary &quot;front-facing&quot; class for the SetListArduino library. ">SetListArduino</a> to print back to the serial terminal indicating either the command was OK or whether there is an error. </p>
+
+</div>
+</div>
+<a class="anchor" id="a3c5691955e2ad05317f466b10354b101"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SetListArduino::_triggerChannel</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Binding for <code>attachInterrupt()</code> ISR routine. </p>
+<p>For Arduino Due, this is the pin where you have attached the trigger channel. For other Arduinos, this is the ISR to use, which works on a pre-defined pin.</p>
+<p>Interrupts are handled in the static class <a class="el" href="class_set_list_i_s_r.html" title="Static class which handles trigger interrupt routines. ">SetListISR</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="class_set_list_i_s_r.html" title="Static class which handles trigger interrupt routines. ">SetListISR</a>, <a class="el" href="class_set_list_arduino.html#a323374a1a897aca1bc30bd936c7bdf43" title="Constructor function. ">SetListArduino()</a> </dd></dl>
 
 </div>
 </div>
@@ -359,7 +851,7 @@ template&lt;typename Device &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 22 2014 10:10:23 for My Project by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 22 2014 10:44:14 for JQI Arduino Libraries by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

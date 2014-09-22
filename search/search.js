@@ -10,8 +10,8 @@ var indexSectionsWithContent =
   0: "_abcdefgilmprstuw",
   1: "alms",
   2: "almrs",
-  3: "abcdefgilprstuw",
-  4: "_mps",
+  3: "_abcdefgilprstuw",
+  4: "_cfmprs",
   5: "gs",
   6: "adms",
   7: "almrs"
