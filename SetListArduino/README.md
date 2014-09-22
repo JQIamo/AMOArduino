@@ -30,10 +30,6 @@ board.
 SetListArduino SetListImage(triggerChannel); 
 
 
-
-
-
-
 // Instantiate DDS object, using the AD9954 library.
 // Exact instantiation depends on how DDS is connected.
 // This could just as easily be any other device the 
@@ -51,15 +47,12 @@ SetListArduino SetListImage(triggerChannel);
 
 AD9954 DDS(D1SS, D1RESET, D1IOUPDATE, D1PS0, D1PS1, D1OSK);    
 
-
-
 // Callback function to set a particular DDS frequency
 // We know that LabView will pass a single parameter for the frequency, thus
 // we want to pull freq = params[0].
 void setDDSFreq(AD9954 * dds, int * params){
     dds->setFreq(params[0]);
 }
-
 
 // Callback function to initiate a DDS ramp.
 // Say we set this up so LabView will pass the parameters 
@@ -85,9 +78,7 @@ void rampDDS(AD9954 * dds, int * params){
 
     dds->linearSweep(f0, f1, posDF, RR, posDF, RR);
     digitalWrite(D1PS1, HIGH);  // DDS starts sweeping...
-
 }
-
 
 void setup(){
 
@@ -120,9 +111,6 @@ void setup(){
     // If we had a second DDS, say on channel 1, we would have to do a 
     // second SetListImage.registerCommand("r", 1, rampDDS);
     SetListImage.registerCommand("r", 0, rampDDS);
-
-
-
 }
 
 void loop(){
@@ -130,10 +118,6 @@ void loop(){
                                 // from computer
 }
 ~~~~~~~~~~~~~~~~~~~~
-
-
-
-
 
 
 
