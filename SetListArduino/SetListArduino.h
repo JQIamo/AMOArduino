@@ -36,6 +36,7 @@
 */
 
 
+#include "Arduino.h"
 
 #ifndef SetListArduino_h
 #define SetListArduino_h 

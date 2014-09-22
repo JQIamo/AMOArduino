@@ -22,11 +22,7 @@
 
  */
 
-
-
-#include "Arduino.h"
 #include "SetListArduino.h"
-
 
 /***********************************************
 	SetListBase Class definitions
