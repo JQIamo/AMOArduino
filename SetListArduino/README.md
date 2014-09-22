@@ -18,7 +18,7 @@ For examples and more details, see below!
 Here is a short sketch to illustrate how one might integrate an AD9954 DDS 
 board. 
 
-    ```C++
+```C++
     #include <SPI.h>
     #include <AD9954.h>
     #include <SetListArduino.h>
@@ -129,7 +129,7 @@ board.
         SetListImage.readSerial();  // listen for & process serial commands 
                                     // from computer
     }
-    ```
+```
 
 
 
