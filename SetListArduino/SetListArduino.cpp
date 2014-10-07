@@ -242,20 +242,25 @@ void SetListArduino::readSerial(){
                         	Serial.print(_commandList[i].command);
                         	Serial.print(", Channel #: ");
                         	Serial.println(_activeDevice);
+							Serial.println("These are the params: ");
                         #endif
                         
                         int paramList[MAX_PARAM_NUM];
-                        Serial.println("These are the params: ");
+
                         for (int p = 0; p < MAX_PARAM_NUM; p++){
                         	char * paramChar = strtok_r(NULL, _delim, & _last);
                         	if (paramChar != NULL){
-                        		Serial.println(paramChar);
-                            	paramList[p] = atoi(paramChar);
-                            	Serial.println(atoi(paramChar));
+								paramList[p] = atoi(paramChar);
+                            	#ifdef SETLIST_DEBUG
+									Serial.println(paramChar);
+									Serial.println(atoi(paramChar));
+								#endif
                             } else {
-                            	Serial.print("param was null: ");
-                            	Serial.println(p);
-                            	paramList[p] = 0;
+                            	#ifdef SETLIST_DEBUG
+									Serial.print("param was null: ");
+									Serial.println(p);
+                            	#endif
+								paramList[p] = 0;
                             }
                         }
                         
