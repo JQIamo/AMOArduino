@@ -57,7 +57,12 @@ SetListArduino::SetListArduino(int triggerChannel) :
     // configure some stuff for the serial parsing...
     strcpy(_delim, " ");	// set string delimiter for strtok_r
     clearSerialBuffer();	// clear serial buffer and prepare to readSerial
+	
+	//detachInterrupt(_triggerChannel);
+	attachInterrupt(_triggerChannel, SetListISR::dummyInterrupt, FALLING);
 }
+
+
 
 // triggerUpdate() - execute next line in setlist.
 void SetListArduino::triggerUpdate(){
@@ -83,6 +88,9 @@ int SetListArduino::getTriggerChannel(){
 // 		This is based heavily off of kroimon's SerialCommand library:
 //      https://github.com/kroimon/Arduino-SerialCommand
 void SetListArduino::readSerial(){
+	// initialize error flag to false; will throw if encounters issue.
+	_errorFlag = false;
+	bool run = false;
     while (Serial.available() > 0){
         // read in next character from serial stream
         char inChar = Serial.read();
@@ -132,6 +140,7 @@ void SetListArduino::readSerial(){
             		
             	case _initRunCmd:
             		specialCmd = true;
+					run = true;
             		_line = 0;
                 	            		
             		
@@ -153,8 +162,13 @@ void SetListArduino::readSerial(){
 						// reset ISR
 						detachInterrupt(_triggerChannel);
 						attachInterrupt(_triggerChannel,
-                    		SetListISR::firstTriggerInterrupt, FALLING);
-					}            		
+							SetListISR::firstTriggerInterrupt, FALLING);
+						
+						// initialize by executing first setlist line
+						
+						triggerUpdate();
+							
+					}
             		break;
             		
             	case _echoSetListCmd:
@@ -314,6 +328,15 @@ void SetListArduino::readSerial(){
             
             clearSerialBuffer();    // clear out serial buffer
                                     // to prepare for next line.
+			if (_errorFlag){
+				Serial.println("B");
+			} else {
+				if (run) {
+				Serial.println("GR");	// OK status to labview
+				} else {
+				Serial.println("G");
+				}
+			}
         } 
         // If inChar isn't the serial line terminator, 
         // just add it to buffer and repeat.
@@ -330,6 +353,7 @@ void SetListArduino::readSerial(){
 
 
 void SetListArduino::clearSerialBuffer(){
+
     _bufPos = 0;
     _buffer[0] = '\0';
 }
@@ -352,7 +376,7 @@ void SetListArduino::clearSerialBuffer(){
 extern SetListArduino SetListImage;
 
 void SetListISR::firstTriggerInterrupt(){
-    SetListImage.triggerUpdate();
+	SetListImage.triggerUpdate();
     
     // switch interrupt to trigger on CHANGE for rest of trigger pulses
     int triggerChannel = SetListImage.getTriggerChannel();
@@ -364,3 +388,14 @@ void SetListISR::restTriggerInterrupt(){
     SetListImage.triggerUpdate();
 }
 
+//! Dummy interrupt routine.
+/*!
+	This dummy interrupt routine is attached when SetListArduino object is declared.
+	It does nothing, but fixes an irritating issue where SetListISR::firstTriggerInterrupt
+	is executed when it is attached immediately after the Arduino resets. This should
+	be ultimately fixed by clearing the ISR flags, but I'm not clear on the best
+	way to do that in a platform-agnostic manner, since the Due allows interrupts to be 
+	attached on any pin.
+*/
+void SetListISR::dummyInterrupt(){
+}

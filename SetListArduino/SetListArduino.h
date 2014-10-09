@@ -151,6 +151,7 @@ class SetListBase {
     class SetListDevice
 ************************************************/
 
+
 // Template for "device" class, where the type is specific 
 // to each controlled device.
 //
@@ -207,7 +208,7 @@ template <class Device> class SetListDevice : public SetListBase {
         	_device = & device;
 			#ifdef SETLIST_DEBUG
 				Serial.println("Creating new device");
-			#endif        
+			#endif  			
         }
        
         
@@ -403,6 +404,7 @@ class SetListArduino {
 		*/
 		SetListArduino(int triggerChannel);
 		
+		
 		// register a device with SetListArduino.
 		// Pass the device in by reference, and specify the channel number
 		// you set up in SetList on the computer.
@@ -446,7 +448,7 @@ class SetListArduino {
 				#ifdef SETLIST_DEBUG
 					Serial.println("Initializing new device...");
 				#endif
-			
+				
 			// create new SetListDevice from the device you passed.
 			// Fun fact I learned: pay attention to whether this is created
 			// on the stack or the heap! Here, because we want the SetListDevice
@@ -457,7 +459,6 @@ class SetListArduino {
 			
 				_deviceList[channel] = newDevice;
 				_deviceCount++;
-			
 				#ifdef SETLIST_DEBUG
 					Serial.print("Device created on channel ");
 					Serial.println(channel);
@@ -825,6 +826,7 @@ class SetListISR {
         	\sa firstTriggerInterrupt(), SetListArduino::_triggerChannel, SetListArduino::SetListArduino()
         */
         static void restTriggerInterrupt();
+		static void dummyInterrupt();
 };
 
 
