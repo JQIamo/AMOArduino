@@ -48,7 +48,8 @@ SetListArduino::SetListArduino(int triggerChannel) :
     _deviceCount(0),
     _activeDevice(0),
     _serialTerm('\n'),
-    _last(NULL),
+    _lastCmd(NULL),
+	_lastParam(NULL),
     _line(0),
     _errorFlag(0)
 {
@@ -56,7 +57,8 @@ SetListArduino::SetListArduino(int triggerChannel) :
     
     // configure some stuff for the serial parsing...
     strcpy(_delim, " ");	// set string delimiter for strtok_r
-    clearSerialBuffer();	// clear serial buffer and prepare to readSerial
+    strcpy(_cmdDelim, ";");	// set command delimiter for strtok_r
+	clearSerialBuffer();	// clear serial buffer and prepare to readSerial
 	
 	//detachInterrupt(_triggerChannel);
 	attachInterrupt(_triggerChannel, SetListISR::dummyInterrupt, FALLING);
@@ -90,254 +92,263 @@ int SetListArduino::getTriggerChannel(){
 void SetListArduino::readSerial(){
 	// initialize error flag to false; will throw if encounters issue.
 	_errorFlag = false;
-	bool run = false;
     while (Serial.available() > 0){
         // read in next character from serial stream
         char inChar = Serial.read();
         
         if (inChar == _serialTerm) {
-            // reached serial line terminator, so tokenize string
-            char * command = strtok_r(_buffer, _delim, & _last);
+            // reached serial line terminator, so tokenize string.
+			
+			// here, we assume that a single serial line can contain 
+			// many commands... so first split off with the command
+			// delimiter
+			char * commandParent = strtok_r(_buffer, _cmdDelim, & _lastCmd);
+            char * command;			// = strtok_r(_buffer, _delim, & _lastParam);
             char * param;
             
-            // check to see if command was a "special" command
-            bool specialCmd = false;
-            switch (*command) {
-            	case _activateDeviceCmd:
-            		specialCmd = true;
-            		_line = 0;
-                	_setlistLength = 0; // reset counter for setlist...
-                                    	// all of the logic here assumes you're
-                                    	// sending setlists of equal length for 
-                                    	// all devices!!
-            		
-            		param = strtok_r(NULL, _delim, & _last);
-            		
-            		#ifdef SETLIST_DEBUG
-            			Serial.print("Activating device: ");
-            			Serial.println(param);
-            		#endif
-            		
-            		// Parse device number, error check, and activate device
-            		if (param != NULL) {
-            			
-                    	int channel = atoi(param);
-                    	              
-						if(channel >= 0 && channel < _deviceCount){
-							_activeDevice = channel;
-							_deviceList[_activeDevice]->clearSetList();
-						} else {
-							#ifdef SETLIST_ERROR_CHECK
-								Serial.println("ArduinoError: Invalid Channel");
-							#endif
-						}
-					} else {
-						#ifdef SETLIST_ERROR_CHECK
-							Serial.println("ArduinoError: Invalid Param");
-						#endif                  
-					}      
-            		break;
-            		
-            	case _initRunCmd:
-            		specialCmd = true;
-					run = true;
-            		_line = 0;
-                	            		
-            		
-            		// check that _setlist table is rectangular...
-            		for (int d = 0; d < _deviceCount; d++){
-            			if(_deviceList[d]->getSetListLength() != _setlistLength)
-            			{	
-            				_errorFlag = true;
-            				break;
-            			}
-            		}
-            		
-            				
-            		if (!_errorFlag){
+			while (commandParent != NULL){
+				command = strtok_r(commandParent, _delim, & _lastParam);
+			
+				// check to see if command was a "special" command
+				bool specialCmd = false;
+				switch (*command) {
+					case _activateDeviceCmd:
+						specialCmd = true;
+						_line = 0;
+						_setlistLength = 0; // reset counter for setlist...
+											// all of the logic here assumes you're
+											// sending setlists of equal length for 
+											// all devices!!
+						
+						param = strtok_r(NULL, _delim, & _lastParam);
+						
 						#ifdef SETLIST_DEBUG
-							Serial.println("Init SetList run...");
+							Serial.print("Activating device: ");
+							Serial.println(param);
 						#endif
 						
-						// reset ISR
-						detachInterrupt(_triggerChannel);
-						attachInterrupt(_triggerChannel,
-							SetListISR::firstTriggerInterrupt, FALLING);
-						
-						// initialize by executing first setlist line
-						
-						triggerUpdate();
+						// Parse device number, error check, and activate device
+						if (param != NULL) {
 							
-					}
-            		break;
-            		
-            	case _echoSetListCmd:
-            		specialCmd = true;
-            		
-            		#ifdef SETLIST_DEBUG
-            			Serial.println("Here is the programmed setlist:");
-            		#endif
-            		
-            		for (int i = 0; i < _deviceCount; i++){
-            			Serial.print("Device #");
-            			Serial.println(i);
-            			Serial.print("Setlist lines: ");
-            			int setlistLength = _deviceList[i]->getSetListLength();
-            			Serial.println(setlistLength);
-            			for (int j = 0; j < setlistLength; j++){
-            				Serial.print("ln ");
-            				Serial.print(j);
-            				Serial.print("; Callback Ptr ");
-            				Serial.print(_deviceList[i]->getSetListFunc(j));
-            				Serial.print("; Params ");
-            				int * lineParams = 
-            					_deviceList[i]->getSetListParams(j);
-            				for(int k = 0; k < MAX_PARAM_NUM; k++){
-            					Serial.print(lineParams[k]);
-            					Serial.print(" ");
-            				}
-            				Serial.println(";");
-            			}
-            			Serial.println("----------");
-            			if(setlistLength != _setlistLength){
-            				Serial.print("There is a mismatch in setlist lines. Device thinks there are ");
-            				Serial.print(setlistLength);
-            				Serial.print(" lines, while SetListImage thinks there are ");
-            				Serial.print(_setlistLength);
-            				Serial.println(" lines. Get yo' life together!");
-            			}
-            		}
-            		break;
-            	
-            	case _executeSingleLine:
-            		specialCmd = true;
-            		int ch = atoi(strtok_r(NULL, _delim, & _last));
-            		int ln = atoi(strtok_r(NULL, _delim, & _last));
-            		#ifdef SETLIST_DEBUG
-            			Serial.println("Executing single line...");
-            			Serial.print("Channel: ");
-            			Serial.print(ch);
-            			Serial.print(" Line: ");
-            			Serial.println(ln);
-            		#endif
-            		if ( ch >= 0 && ch < _deviceCount){
-            			_deviceList[ch]->executeSetList(ln);
-            		} else {
-            			#ifdef SETLIST_DEBUG
-            				Serial.print("Channel out of range. Only ");
-            				Serial.print(_deviceCount);
-            				Serial.println(" devices are registered.");
-            			#endif
-            		}
-            		break;	
-            }
-			
-			
-            
-            // If command isn't one of the "special" commands,
-        	// try to match it with list of registered commands.
-            if (command != NULL && !specialCmd) {
-                
-                boolean matched = false;
-                for (int i = 0; i < _commandCount; i++) {
-                    #ifdef SETLIST_DEBUG
-                    	Serial.print("Trying to match command: ");
-                    	Serial.println(_commandList[i].command);
-                    #endif
-                    
-                    // check to see if command is in commandList,
-                    // and channel matches with currently activated device.
-                    if ((strncmp(command, _commandList[i].command, 
-                            SERIALCOMMAND_MAXCOMMANDLENGTH) == 0) &&
-                            (_commandList[i].channel == _activeDevice)){
-                        
-                        #ifdef SETLIST_DEBUG
-                        	Serial.print("Matched command: ");
-                        	Serial.print(_commandList[i].command);
-                        	Serial.print(", Channel #: ");
-                        	Serial.println(_activeDevice);
-							Serial.println("These are the params: ");
-                        #endif
-                        
-                        int paramList[MAX_PARAM_NUM];
-
-                        for (int p = 0; p < MAX_PARAM_NUM; p++){
-                        	char * paramChar = strtok_r(NULL, _delim, & _last);
-                        	if (paramChar != NULL){
-								paramList[p] = atoi(paramChar);
-                            	#ifdef SETLIST_DEBUG
-									Serial.println(paramChar);
-									Serial.println(atoi(paramChar));
+							int channel = atoi(param);
+										  
+							if(channel >= 0 && channel < _deviceCount){
+								_activeDevice = channel;
+								_deviceList[_activeDevice]->clearSetList();
+							} else {
+								#ifdef SETLIST_ERROR_CHECK
+									Serial.println("ArduinoError: Invalid Channel");
 								#endif
-                            } else {
-                            	#ifdef SETLIST_DEBUG
-									Serial.print("param was null: ");
-									Serial.println(p);
-                            	#endif
-								paramList[p] = 0;
-                            }
-                        }
-                        
-                        #ifdef SETLIST_DEBUG
-                        	Serial.print("Parameters passed: ");
-                        	for(int p = 0; p < MAX_PARAM_NUM; p++){
-                        		Serial.print(paramList[p]);
-                        		Serial.print(", ");
-                        	}
-                        	Serial.println("");
-                        	Serial.print("Inserting into setlist line #: ");
-                        	Serial.println(_line);
-                        #endif
-                        
-                        _deviceList[_activeDevice]->insertToSetList(_line++,
-                					_commandList[i].function, paramList);
-               			
-               			_setlistLength++;	// increment setlist length counter
-                        
-                        matched = true;
+							}
+						} else {
+							#ifdef SETLIST_ERROR_CHECK
+								Serial.println("ArduinoError: Invalid Param");
+							#endif                  
+						}      
+						break;
+						
+					case _initRunCmd:
+						specialCmd = true;
+						_line = 0;
+											
+						
+						// check that _setlist table is rectangular...
+						for (int d = 0; d < _deviceCount; d++){
+							if(_deviceList[d]->getSetListLength() != _setlistLength)
+							{	
+								_errorFlag = true;
+								break;
+							}
+						}
+						
+								
+						if (!_errorFlag){
+							#ifdef SETLIST_DEBUG
+								Serial.println("Init SetList run...");
+							#endif
+							
+							// reset ISR
+							detachInterrupt(_triggerChannel);
+							attachInterrupt(_triggerChannel,
+								SetListISR::firstTriggerInterrupt, FALLING);
+							
+							// initialize by executing first setlist line
+							
+							triggerUpdate();
+								
+						}
+						break;
+						
+					case _echoSetListCmd:
+						specialCmd = true;
+						
+						#ifdef SETLIST_DEBUG
+							Serial.println("Here is the programmed setlist:");
+						#endif
+						
+						for (int i = 0; i < _deviceCount; i++){
+							Serial.print("Device #");
+							Serial.println(i);
+							Serial.print("Setlist lines: ");
+							int setlistLength = _deviceList[i]->getSetListLength();
+							Serial.println(setlistLength);
+							for (int j = 0; j < setlistLength; j++){
+								Serial.print("ln ");
+								Serial.print(j);
+								Serial.print("; Callback Ptr ");
+								Serial.print(_deviceList[i]->getSetListFunc(j));
+								Serial.print("; Params ");
+								int * lineParams = 
+									_deviceList[i]->getSetListParams(j);
+								for(int k = 0; k < MAX_PARAM_NUM; k++){
+									Serial.print(lineParams[k]);
+									Serial.print(" ");
+								}
+								Serial.println(";");
+							}
+							Serial.println("----------");
+							if(setlistLength != _setlistLength){
+								Serial.print("There is a mismatch in setlist lines. Device thinks there are ");
+								Serial.print(setlistLength);
+								Serial.print(" lines, while SetListImage thinks there are ");
+								Serial.print(_setlistLength);
+								Serial.println(" lines. Get yo' life together!");
+							}
+						}
+						break;
+					
+					case _executeSingleLine:
+						specialCmd = true;
+						int ch = atoi(strtok_r(NULL, _delim, & _lastParam));
+						int ln = atoi(strtok_r(NULL, _delim, & _lastParam));
+						#ifdef SETLIST_DEBUG
+							Serial.println("Executing single line...");
+							Serial.print("Channel: ");
+							Serial.print(ch);
+							Serial.print(" Line: ");
+							Serial.println(ln);
+						#endif
+						if ( ch >= 0 && ch < _deviceCount){
+							_deviceList[ch]->executeSetList(ln);
+						} else {
+							#ifdef SETLIST_DEBUG
+								Serial.print("Channel out of range. Only ");
+								Serial.print(_deviceCount);
+								Serial.println(" devices are registered.");
+							#endif
+						}
+						break;	
+				}
+				
+				
+				
+				// If command isn't one of the "special" commands,
+				// try to match it with list of registered commands.
+				if (command != NULL && !specialCmd) {
+					
+					boolean matched = false;
+					for (int i = 0; i < _commandCount; i++) {
+						#ifdef SETLIST_DEBUG
+							Serial.print("Trying to match command: ");
+							Serial.println(_commandList[i].command);
+						#endif
+						
+						// check to see if command is in commandList,
+						// and channel matches with currently activated device.
+						if ((strncmp(command, _commandList[i].command, 
+								SERIALCOMMAND_MAXCOMMANDLENGTH) == 0) &&
+								(_commandList[i].channel == _activeDevice)){
+							
+							#ifdef SETLIST_DEBUG
+								Serial.print("Matched command: ");
+								Serial.print(_commandList[i].command);
+								Serial.print(", Channel #: ");
+								Serial.println(_activeDevice);
+								Serial.println("These are the params: ");
+							#endif
+							
+							int paramList[MAX_PARAM_NUM];
 
-                        
-                        break;
-                    }
-                }   // end loop over _commandList
-                
-                // If command not matched, tell labview if ERR_CHECK defined.
-                if (!matched) {
-                    #ifdef SETLIST_ERROR_CHECK
-                    	_errorFlag = true;
-                    #endif
-                    #ifdef SETLIST_DEBUG
-                    	Serial.print("That was an invalid command. You sent ");
-                    	Serial.print("(");
-                    	Serial.print(_activeDevice);
-                    	Serial.print(",");
-                    	Serial.print(command);
-                    	Serial.println("), but valid commands (channel, cmd) are:");
-                    	for (int i = 0; i < _commandCount; i++){
-                    		Serial.print("(");
-                    		Serial.print(_commandList[i].channel);
-                    		Serial.print(",");
-                    		Serial.print(_commandList[i].command);
-                    		Serial.print(")");
-                    	}
-                    	Serial.println("");
-                    #endif
-                    
-                }
-            }
-            
-            clearSerialBuffer();    // clear out serial buffer
-                                    // to prepare for next line.
+							for (int p = 0; p < MAX_PARAM_NUM; p++){
+								char * paramChar = strtok_r(NULL, _delim, & _lastParam);
+								if (paramChar != NULL){
+									paramList[p] = atoi(paramChar);
+									#ifdef SETLIST_DEBUG
+										Serial.println(paramChar);
+										Serial.println(atoi(paramChar));
+									#endif
+								} else {
+									#ifdef SETLIST_DEBUG
+										Serial.print("param was null: ");
+										Serial.println(p);
+									#endif
+									paramList[p] = 0;
+								}
+							}
+							
+							#ifdef SETLIST_DEBUG
+								Serial.print("Parameters passed: ");
+								for(int p = 0; p < MAX_PARAM_NUM; p++){
+									Serial.print(paramList[p]);
+									Serial.print(", ");
+								}
+								Serial.println("");
+								Serial.print("Inserting into setlist line #: ");
+								Serial.println(_line);
+							#endif
+							
+							_deviceList[_activeDevice]->insertToSetList(_line++,
+										_commandList[i].function, paramList);
+							
+							_setlistLength++;	// increment setlist length counter
+							
+							matched = true;
+
+							
+							break;
+						}
+					}   // end loop over _commandList
+					
+					// If command not matched, tell labview if ERR_CHECK defined.
+					if (!matched) {
+						#ifdef SETLIST_ERROR_CHECK
+							_errorFlag = true;
+						#endif
+						#ifdef SETLIST_DEBUG
+							Serial.print("That was an invalid command. You sent ");
+							Serial.print("(");
+							Serial.print(_activeDevice);
+							Serial.print(",");
+							Serial.print(command);
+							Serial.println("), but valid commands (channel, cmd) are:");
+							for (int i = 0; i < _commandCount; i++){
+								Serial.print("(");
+								Serial.print(_commandList[i].channel);
+								Serial.print(",");
+								Serial.print(_commandList[i].command);
+								Serial.print(")");
+							}
+							Serial.println("");
+						#endif
+						
+					}
+				}
+				
+				commandParent = strtok_r(NULL, _cmdDelim, & _lastCmd);
+				//clearSerialBuffer();    // clear out serial buffer
+										// to prepare for next line.
+										/*
+				
+				*/
+			}
+			clearSerialBuffer();    // clear out serial buffer
+										// to prepare for next line.
 			if (_errorFlag){
 				Serial.println("B");
 			} else {
-				if (run) {
-				Serial.println("GR");	// OK status to labview
-				} else {
 				Serial.println("G");
-				}
 			}
-        } 
+		} 
         // If inChar isn't the serial line terminator, 
         // just add it to buffer and repeat.
         // if _bufPos > serial command buffer length, currently loose chars.

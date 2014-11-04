@@ -661,10 +661,22 @@ class SetListArduino {
         
         //! Text delimiter to use for strtok_r in readSerial().
         char _delim[2];     	// Text delimiter; defaults to " "
+		
+		//! Command delimiter to use for strtok_r in readSerial().
+		/*!
+			This enables a single serial line to contain multiple commands.
+			in readSerial(), we first tokenize using _cmdDelim, and then 
+			tokenize each command with the text delimiter _delim.
+			
+			\sa readSerial()
+		*/
+		char _cmdDelim[2];		// Command delimiter; defaults to ";"
         
         //! State variable used by strtok_r in readSerial().
-        char * _last;       	// state variable used by strtok_r  
+        char * _lastParam;     	// state variable used by strtok_r  
                             	// during text processing.
+		//! State variable used by strtok_r in readSerial() for tokenizing commands.
+		char * _lastCmd;
         
         //! Holds total number of registered commands.
         int _commandCount;  	// keeps track of registered command total
