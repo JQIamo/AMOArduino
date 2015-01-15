@@ -1,5 +1,21 @@
 # Arduino libraries
 
+The following libraries have been split off into unique repositories, owned by @JQIamo. As such, this repository will no longer be maintained/updated. All new code development should take place in the library's individual repository.
+
+## Renaming convention
+
+Each library is split into a new repo, with the name `<LIBRARY>-arduino`. For example, the `AD9954` is now its own repository, `AD9954-arduino`.
+
+Newly developed libraries should be created as their own repository, with the same naming convention. When you clone them to your local machine, you should place them in your `Arduino/libraries` folder, with just the name of the library. Ie, the github repository `AD9954-arduino` should be cloned into the directory `Arduino/libraries/AD9954`.
+
+## Doxygen documentation
+
+Each repository will now host its own Doxygen documentation/project pages.
+
+# OLD INFO
+
+**SEE NEW LIBRARIES FOR LATEST DOCUMENTATION!** The following is kept for historic purposes only.
+
 These are a few arduino libraries we are using at the JQI. Hopefully they are useful to others, too! The idea is
 to make it easy to interface with various instruments in the lab (frequency sythesizers, DACs/ADCs, etc).
 
